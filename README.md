@@ -12,7 +12,7 @@ Add a link to a demo of your project.
 
 This project was created by:
 
-* Student 1 
+* Student 1
 * Student 2
 * Student 3
 
@@ -46,7 +46,7 @@ List and justify the third party libraries you used.
 
 List and explain how you used the 10 programming techniques required for this project.
 
-- **Technique 1**: We used interfaces to do X, because of Y. 
+- **Technique 1**: We used interfaces to do X, because of Y.
 - **Technique 2**: ...
 - ...
 
@@ -72,7 +72,8 @@ Describe the roles and responsibilities each member had in this project.
 
 Elaborate on the main challenges each group member faced throughout the project and how they were surpassed.
 
-- **Student 1:** The most difficult aspect in this project for me was to implement the units tests. The reason was X so I had to do Y and I achived Z.
+- **Student 1:** The most difficult aspect in this project for me was to implement the units tests. The reason was X so
+  I had to do Y and I achived Z.
 - **Student 2:** ...
 - **Student 3:** ...
 
