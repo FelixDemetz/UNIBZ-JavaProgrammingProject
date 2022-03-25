@@ -1,3 +1,4 @@
+/* This class launches / runns the app */
 package projectgrouplf.projectlf;
 
 import javafx.application.Application;
