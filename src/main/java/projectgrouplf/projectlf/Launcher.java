@@ -2,20 +2,16 @@
 package projectgrouplf.projectlf;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public class Launcher extends Application {
-    @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Launcher.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 900, 450);
-        stage.setTitle("AppTitle");
-        stage.setScene(scene);
-        stage.show();
+
+    public void start(Stage primaryStage) {
+        Scene scene = new Scene(new App(), 1600, 900);
+        primaryStage.setTitle("Blood for Freedom - by Felix Demetz and Lucas Glück");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
