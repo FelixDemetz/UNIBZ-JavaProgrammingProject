@@ -1,12 +1,17 @@
 package projectgrouplf.projectlf;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javafx.application.Platform;
+
 import javafx.event.ActionEvent;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -18,7 +23,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle; 
+import javafx.scene.shape.Rectangle;
 
 public class App extends VBox {
     
@@ -45,7 +50,7 @@ public class App extends VBox {
     boolean buyButtonClicked = false;
     boolean gameRun = true; // boolean for Start and Pause btn
 
-    public int buttonPressCounter = 0;
+    Timer gameTimer;
 
     public App() {
 
@@ -63,7 +68,7 @@ public class App extends VBox {
         copyOfenemyArray.addAll(enemyArray);
 
         // all the labels
-        labelBaseHealth = new Label("❤️ " + Base.getBaseHealth());
+        labelBaseHealth = new Label("Health: " + Base.getBaseHealth());
         labelBaseMoney = new Label("$ " + Base.getBaseMoney());
         labelBuyDefenderInfo = new Label("To buy defence,"
         + "\npress a button"
@@ -74,8 +79,14 @@ public class App extends VBox {
         labelStoreTitle = new Label("War Industry");
         labelStoreTitle.setTextFill(Color.BISQUE);
         labelStoreTitle.setAlignment(Pos.CENTER);
+        labelStoreTitle.setStyle("-fx-font-size: 20px;");
+
         labelBaseHealth.setTextFill(Color.rgb(210, 20, 20));
+        labelBaseHealth.setStyle("-fx-font-size: 15px;");
+
         labelBaseMoney.setTextFill(Color.GOLD);
+        labelBaseMoney.setStyle("-fx-font-size: 15px;");
+
         labelBuyDefenderInfo.setTextFill(Color.WHITE);
         
         // buttons
@@ -86,6 +97,19 @@ public class App extends VBox {
             + "\nto place the unit");
             buyButtonClicked = true;
             defenderRank = 1;
+            // here show the radius of the defender
+            
+            // setOnMouseDragged(new EventHandler<MouseEvent>() {
+            //     @Override public void handle(MouseEvent event) {
+            //       String msg =
+            //         "(x: "       + event.getX()      + ", y: "       + event.getY()       + ") -- " +
+            //         "(sceneX: "  + event.getSceneX() + ", sceneY: "  + event.getSceneY()  + ") -- " +
+            //         "(screenX: " + event.getScreenX()+ ", screenY: " + event.getScreenY() + ")";
+          
+            //       reporter.setText(msg);
+            //     }
+            //   });
+
             setOnMouseClicked(this::getMouseCoordinateClick);
         });
         buyNormalDefenderButton = new Button("Agent O. 50$");
@@ -109,6 +133,7 @@ public class App extends VBox {
 
         pauseButton = new Button("Pause");
         pauseButton.setOnAction((ActionEvent event) -> {
+            gameTimer.cancel();
             new PausePane();
         });
         quitButton = new Button("Quit");
@@ -117,27 +142,37 @@ public class App extends VBox {
         });  
 
 
-        startButton = new Button("next day:");
-        startButton.setOnAction((ActionEvent event) -> { // this is the game
-            for (int i = 0; i < inGameEnemyArray.size(); i++) {
-                checkIfEnemyReachedBase(inGameEnemyArray.get(i));
-                if (inGameEnemyArray.size() == 0) {// HERE IS AN ERROR WHEN THERE IS NO ENEMY LEFT ON FIELD
-                    System.out.println("size 0 in the main for loop");
-                    break;
+        startButton = new Button("Declare war");
+        startButton.setOnAction((ActionEvent event) -> {
+
+            gameTimer = new Timer();
+            gameTimer.scheduleAtFixedRate(new TimerTask() { // https://stackoverflow.com/questions/26916640/javafx-not-on-fx-application-thread-when-using-timer
+                public void run() {
+                    Platform.runLater(() -> {
+
+                        for (int i = 0; i < inGameEnemyArray.size(); i++) { // this is the game
+                            checkIfEnemyReachedBase(inGameEnemyArray.get(i));
+                            if (inGameEnemyArray.size() == 0) {// HERE IS AN ERROR WHEN THERE IS NO ENEMY LEFT ON FIELD
+                                System.out.println("size 0 in the main for loop");
+                                break;
+                            }
+                            checkIfEnemyInDefenderRadius(inGameEnemyArray.get(i));
+                            inGameEnemyArray.get(i).enemyMovesForward(endingPoint, labelBaseHealth);
+                            if (inGameEnemyArray.size() == 0) {// HERE IS AN ERROR WHEN THERE IS NO ENEMY LEFT ON FIELD
+                                System.out.println("size 0 in the main for loop");
+                                break;
+                            }
+                        }
+                        addEnemyToGameArea(); // here should wait 
+                        updateLabels();
+                        if (Base.getBaseHealth() < 0) {
+                            gameTimer.cancel();
+                            displayEndPane();
+                            return;
+                        }
+                    });
                 }
-                checkIfEnemyInDefenderRadius(inGameEnemyArray.get(i));
-                inGameEnemyArray.get(i).enemyMovesForward(endingPoint, labelBaseHealth);
-                if (inGameEnemyArray.size() == 0) {// HERE IS AN ERROR WHEN THERE IS NO ENEMY LEFT ON FIELD
-                    System.out.println("size 0 in the main for loop");
-                    break;
-                }
-            }
-            if (buttonPressCounter % 2 == 0) { // just every two btn presses
-                addEnemyToGameArea();
-            }
-            updateLabels();
-            isGameFinished();
-            buttonPressCounter++;
+            }, 0, 100);
         });
 
 
@@ -226,7 +261,7 @@ public class App extends VBox {
             }
             if (inGameEnemyArray.size() == 0) { // HERE IS AN ERROR WHEN THERE IS NO ENEMY LEFT ON FIELD
                 System.out.println("size 0");
-                isGameFinished();
+                displayEndPane();
                 return;
             }
         }
@@ -245,8 +280,35 @@ public class App extends VBox {
             enemyArray.remove(0);
         }
     }
-    /** met checks if the game is finished **/
-    private void isGameFinished() {
+    /** met that converts the mouseposition click into a coordinate **/
+    private void getMouseCoordinateClick(MouseEvent event) {
+        if (buyButtonClicked) {
+            Coordinate c = new Coordinate(event.getX()-250, event.getY()-170); // -250 and - 170 default (+ recktangle height and width in the Defender class)
+            // System.out.println("your mouse: " + c);
+            if (gameArea.contains(c.getCoordinateX(), c.getCoordinateY())) {
+                if (defenderRank == 1) {
+                    defenderArray.add(new Defender(c, defenderRank));
+                    Base.setBaseMoney(Base.getBaseMoney() - 25);
+                }
+                if (defenderRank == 2) {
+                    defenderArray.add(new Defender(c, defenderRank));
+                    Base.setBaseMoney(Base.getBaseMoney() - 50);
+                }
+                if (defenderRank == 3) {
+                    defenderArray.add(new Defender(c, defenderRank));
+                    Base.setBaseMoney(Base.getBaseMoney() - 80);
+                }
+                addDefenderToGameArea();
+                updateLabels();
+            }
+            displayEndPane();
+            buyButtonClicked = false;
+        }
+        return;
+    }
+    /** met checks if the game is finished 
+     * @return **/
+    private void displayEndPane() {
         if (Base.getBaseHealth() < 0)
             new EndPane(1);
         if (Base.getBaseMoney() < 0)
@@ -254,33 +316,9 @@ public class App extends VBox {
         if (enemyArray.size() == 0 && inGameEnemyArray.size() == 0 && Base.getBaseHealth() > 0)
             new EndPane(3);
     }
-    /** met that converts the mouseposition click into a coordinate **/
-    private void getMouseCoordinateClick(MouseEvent event) {
-        if (buyButtonClicked) {
-            Coordinate c = new Coordinate(event.getX()-250, event.getY()-170); // -250 and - 170 default (+ recktangle height and width in the Defender class)
-            System.out.println(c);
-            if (defenderRank == 1) {
-                defenderArray.add(new Defender(c, defenderRank));
-                Base.setBaseMoney(Base.getBaseMoney() - 25);
-            }
-            if (defenderRank == 2) {
-                defenderArray.add(new Defender(c, defenderRank));
-                Base.setBaseMoney(Base.getBaseMoney() - 50);
-            }
-            if (defenderRank == 3) {
-                defenderArray.add(new Defender(c, defenderRank));
-                Base.setBaseMoney(Base.getBaseMoney() - 80);
-            }
-            addDefenderToGameArea();
-            updateLabels();
-            isGameFinished();
-            buyButtonClicked = false;
-        }
-        return;
-    }
     /** The met updates the Labels (the text Health, Money, the game description and the health of every Enemy) **/
     private void updateLabels() {
-        labelBaseHealth.setText("❤️ " + Base.getBaseHealth());
+        labelBaseHealth.setText("Health: " + Base.getBaseHealth());
         labelBaseMoney.setText("$ " + Base.getBaseMoney());
         labelBuyDefenderInfo.setText("To buy defence,"
         + "\npress a button"

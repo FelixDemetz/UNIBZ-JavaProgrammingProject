@@ -9,7 +9,7 @@ public class Enemy {
 
     public Circle enemyCircle;
     public Label enemyHealthLabel;
-    private Coordinate enemyCoordinate;
+    public Coordinate enemyCoordinate;
     private int enemyDamage = 1;
     private int enemyHealth = 10;
     private int enemyMoney = 15;
@@ -66,7 +66,7 @@ public class Enemy {
     }
     // Setters
     /** The met has as parameter a new Coordinate() which is the new coordinate of the enemy, sets the circle **/
-    private void setEnemyCoordinate(Coordinate enemyCoordinate) {
+    public void setEnemyCoordinate(Coordinate enemyCoordinate) {
         this.enemyCoordinate =  enemyCoordinate;
         this.enemyCircle.setCenterX(enemyCoordinate.getCoordinateX());
         this.enemyCircle.setCenterY(enemyCoordinate.getCoordinateY());
@@ -75,7 +75,7 @@ public class Enemy {
         boolean enemyNotReachedEnd = this.getEnemyCoordinate().getCoordinateX() < endingPoint.getX()+this.enemyCircle.getRadius();
         if (enemyNotReachedEnd) {// not reached and sec passes
             // SHOULD WE WORK HERE WITH TRANSITIONS?
-            this.setEnemyCoordinate(new Coordinate(this.enemyCoordinate.getCoordinateX() + 40, this.enemyCoordinate.getCoordinateY()));
+            this.setEnemyCoordinate(new Coordinate(this.enemyCoordinate.getCoordinateX() + 10, this.enemyCoordinate.getCoordinateY()));
             this.enemyHealthLabel.setLayoutX(enemyCoordinate.getCoordinateX() - this.enemyHealthLabel.getWidth()/2);
             this.enemyHealthLabel.setLayoutY(enemyCoordinate.getCoordinateY() - this.enemyHealthLabel.getHeight()/2);
         }

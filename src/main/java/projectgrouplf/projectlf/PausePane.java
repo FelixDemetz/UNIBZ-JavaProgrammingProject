@@ -7,7 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 
-public class PausePane {
+public class PausePane extends App{
 
 	public PausePane() {
 		Alert dialog = new Alert(AlertType.INFORMATION);

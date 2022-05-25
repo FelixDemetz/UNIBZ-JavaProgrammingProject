@@ -8,13 +8,8 @@ public class test {
 
     public static int i = 0;
     public static boolean goOn = true;
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
 
-        while (goOn) {
-            long millis = System.currentTimeMillis();
-            System.out.println(i++);
-            Thread.sleep(1000 - millis % 1000);
-        }
 
         Runnable helloRunnable = new Runnable() {
             public void run() {
