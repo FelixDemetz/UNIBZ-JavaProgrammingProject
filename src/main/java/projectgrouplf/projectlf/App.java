@@ -34,7 +34,7 @@ public class App extends VBox {
     
     public Label labelBaseHealth, labelBaseMoney, labelBuyDefenderInfo, labelStoreTitle;
 
-    public Button startButton, pauseButton, buySmallDefenderButton, buyNormalDefenderButton, buyBigDefenderButton, quitButton;
+    public Button pausePlayButton, buySmallDefenderButton, buyNormalDefenderButton, buyBigDefenderButton, quitButton;
     public HBox mainArea;
     public VBox leftArea;
     public VBox topLeftArea;
@@ -60,6 +60,8 @@ public class App extends VBox {
     public Timeline timeline;
 
     public App() {
+
+        new StartPane();
 
         // Base
         Base.survivalOrNormalBaseHealt();
@@ -99,97 +101,87 @@ public class App extends VBox {
         // buttons
         buySmallDefenderButton = new Button("Lil Uzi 25$");
         buySmallDefenderButton.setOnAction((ActionEvent event) -> {
-            labelBuyDefenderInfo.setText("Now click on"
-            + "\nthe battlefield"
-            + "\nto place the unit");
+            // labelBuyDefenderInfo.setText("Now click on"
+            // + "\nthe battlefield"
+            // + "\nto place the unit");
             buyButtonClicked = true;
             defenderRank = 1;
             // here show the radius of the defender
-            
-            // setOnMouseDragged(new EventHandler<MouseEvent>() {
-            //     @Override public void handle(MouseEvent event) {
-            //       String msg =
-            //         "(x: "       + event.getX()      + ", y: "       + event.getY()       + ") -- " +
-            //         "(sceneX: "  + event.getSceneX() + ", sceneY: "  + event.getSceneY()  + ") -- " +
-            //         "(screenX: " + event.getScreenX()+ ", screenY: " + event.getScreenY() + ")";
-          
-            //       reporter.setText(msg);
-            //     }
-            //   });
-
             setOnMouseClicked(this::getMouseCoordinateClick);
         });
         buyNormalDefenderButton = new Button("Agent O. 50$");
         buyNormalDefenderButton.setOnAction((ActionEvent event) -> {
-            labelBuyDefenderInfo.setText("Now click on"
-            + "\nthe battlefield"
-            + "\nto place the unit");
+            // labelBuyDefenderInfo.setText("Now click on"
+            // + "\nthe battlefield"
+            // + "\nto place the unit");
             buyButtonClicked = true;
             defenderRank = 2;
             setOnMouseClicked(this::getMouseCoordinateClick);
         });
         buyBigDefenderButton = new Button("Big Berta 80$");
         buyBigDefenderButton.setOnAction((ActionEvent event) -> {
-            labelBuyDefenderInfo.setText("Now click on"
-            + "\nthe battlefield"
-            + "\nto place the unit");
+            // labelBuyDefenderInfo.setText("Now click on"
+            // + "\nthe battlefield"
+            // + "\nto place the unit");
             buyButtonClicked = true;
             defenderRank = 3;
             setOnMouseClicked(this::getMouseCoordinateClick);
         });
 
-        pauseButton = new Button("Pause");
-        pauseButton.setOnAction((ActionEvent event) -> {
-            timeline.pause();
-            // new PausePane();
+        pausePlayButton = new Button();
+        pausePlayButton.setText("Pause");
+        pausePlayButton.setOnAction((ActionEvent event) -> {
+            if (gameRun == false) {
+                timeline.play();
+                pausePlayButton.setText("Pause");
+                gameRun = true;
+            }
+            else {
+                timeline.pause();
+                pausePlayButton.setText("Continue");
+                gameRun = false;
+            }
         });
-        quitButton = new Button("Continue");
+        quitButton = new Button("Quit");
         quitButton.setOnAction((ActionEvent event) -> {
-            // Platform.exit();
-            timeline.play();
+            Platform.exit();
         });  
 
-
-        startButton = new Button("Declare war");
-        startButton.setOnAction((ActionEvent event) -> { // https://stackoverflow.com/questions/26916640/javafx-not-on-fx-application-thread-when-using-timer
-
-                timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), ev -> {
-                    for (int i = 0; i < inGameEnemyArray.size(); i++) { // this is the game
-                        checkIfEnemyReachedBase(inGameEnemyArray.get(i));
-                        if (inGameEnemyArray.size() == 0) {// HERE IS AN ERROR WHEN THERE IS NO ENEMY LEFT ON FIELD
-                            System.out.println("size 0 in the main for loop");
-                            break;
-                        }
-                        checkIfEnemyInDefenderRadius(inGameEnemyArray.get(i));
-                        inGameEnemyArray.get(i).enemyMovesForward(endingPoint, labelBaseHealth);
-                        if (inGameEnemyArray.size() == 0) {// HERE IS AN ERROR WHEN THERE IS NO ENEMY LEFT ON FIELD
-                            System.out.println("size 0 in the main for loop");
-                            break;
-                        }
-                    }
-                    // try {
-                    //     TimeUnit.SECONDS.sleep(1);
-                    // } catch (InterruptedException e) {
-                    //     // TODO Auto-generated catch block
-                    //     e.printStackTrace();
-                    // }
-                    if (EnemyReleaser % 8 == 0) // here should wait 
-                        addEnemyToGameArea();
-                    updateLabels();
-                    EnemyReleaser++;
-                    if (Base.getBaseHealth() < 0) {
-                        // gameTimer.cancel();
-                        displayEndPane(); // is not able to show, but can pause and continue
-                        return;
-                    }
-                }));
-                timeline.setCycleCount(Animation.INDEFINITE);
-                timeline.play();
-        });
+        // THIS IS THE GAME
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.01), ev -> { // had on 0.05
+            for (int i = 0; i < inGameEnemyArray.size(); i++) {
+                checkIfEnemyReachedBase(inGameEnemyArray.get(i));
+                if (inGameEnemyArray.size() == 0) {// HERE IS AN ERROR WHEN THERE IS NO ENEMY LEFT ON FIELD
+                    System.out.println("size 0 in the main for loop");
+                    break;
+                }
+                if (EnemyReleaser % 16 == 0) // here should wait 
+                    checkIfEnemyInDefenderRadius(inGameEnemyArray.get(i));
+                inGameEnemyArray.get(i).enemyMovesForward(endingPoint, labelBaseHealth);
+                if (inGameEnemyArray.size() == 0) {// HERE IS AN ERROR WHEN THERE IS NO ENEMY LEFT ON FIELD
+                    System.out.println("size 0 in the main for loop");
+                    break;
+                }
+            }
+            if (EnemyReleaser % 32 == 0) // here should wait
+                addEnemyToGameArea();
+            updateLabels();
+            EnemyReleaser++;
+            if (Base.getBaseHealth() < 0) {
+                System.out.println("please pause");
+                timeline.stop();
+                timeline.getKeyFrames().clear();
+                System.out.println("RUDI");
+                timeline.setCycleCount(0);
+                new HelpPane();
+            }
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
 
 
         // the buttonsArea
-        topLeftArea = new VBox(labelBaseHealth, labelBaseMoney, startButton);
+        topLeftArea = new VBox(labelBaseHealth, labelBaseMoney);
         topLeftArea.setPrefSize(125, 100);
         topLeftArea.setSpacing(10); // space betweeen V/HBox elements
         topLeftArea.setAlignment(Pos.CENTER);
@@ -202,7 +194,7 @@ public class App extends VBox {
         centerLeftArea.setAlignment(Pos.CENTER);
         centerLeftArea.setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
         // the bottomLeftArea;
-        bottomLeftArea = new VBox(pauseButton, quitButton);
+        bottomLeftArea = new VBox(pausePlayButton, quitButton);
         bottomLeftArea.setPrefSize(125, 100);
         bottomLeftArea.setSpacing(10); // space betweeen V/HBox elements
         bottomLeftArea.setAlignment(Pos.CENTER);
@@ -295,7 +287,7 @@ public class App extends VBox {
     /** met that converts the mouseposition click into a coordinate **/
     private void getMouseCoordinateClick(MouseEvent event) {
         if (buyButtonClicked) {
-            Coordinate c = new Coordinate(event.getX()-250, event.getY()-170); // -250 and - 170 default (+ recktangle height and width in the Defender class)
+            Coordinate c = new Coordinate(event.getX()-250, event.getY()); // -250 and - 170 default (if scene 1600 and 900)
             // System.out.println("your mouse: " + c);
             if (gameArea.contains(c.getCoordinateX(), c.getCoordinateY())) {
                 if (defenderRank == 1) {

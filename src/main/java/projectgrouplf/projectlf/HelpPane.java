@@ -21,7 +21,6 @@ public class HelpPane {
     	dialog.setContentText("Here is a short guide how to defend \"Blues\" freedom");
 		Optional<ButtonType> result = dialog.showAndWait();
 		if (result.get() == backButtonType) {
-			System.out.println("back btn is clicked");
 			dialog.close();
 		}
 	}

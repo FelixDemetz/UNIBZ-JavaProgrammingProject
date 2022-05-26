@@ -3,10 +3,7 @@ package projectgrouplf.projectlf;
 
 import java.util.Optional;
 
-import javafx.animation.Animation;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
@@ -31,7 +28,6 @@ public class PausePane extends App{
 			Platform.exit();
 		}
 		if (result.get() == continueButtonType) {
-			System.out.println("Continue btn is clicked");
 			dialog.close();
 		}
 		if (result.get() == helpButtonType) {

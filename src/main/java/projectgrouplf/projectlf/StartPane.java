@@ -15,28 +15,30 @@ public class StartPane {
     	dialog.setHeaderText("Blood for Freedom");
 		dialog.setGraphic(null);
 		
-		ButtonType continueButtonType = new ButtonType("Play");
-		ButtonType restartButtonType = new ButtonType("Play Survival");
+		ButtonType playButtonType = new ButtonType("Play");
+		ButtonType playSurvivalButtonType = new ButtonType("Play Survival");
 		ButtonType helpButtonType = new ButtonType("Help");
 		ButtonType quitButtonType = new ButtonType("Quit");
 
-		dialog.getButtonTypes().setAll(continueButtonType, restartButtonType, helpButtonType, quitButtonType);
-
+		dialog.getButtonTypes().setAll(playButtonType, playSurvivalButtonType, helpButtonType, quitButtonType);
+		dialog.setContentText("by Felix Demetz and Lucas Glick");
+		
 		Optional<ButtonType> result = dialog.showAndWait();
-		if (result.get() == quitButtonType) {
-			Platform.exit();
-		}
-		if (result.get() == continueButtonType) {
-			System.out.println("Continue btn is clicked");
+		if (result.get() == playButtonType) {
 			dialog.close();
+			new MissionInfoPane();
 		}
+		if (result.get() == playSurvivalButtonType) {
+			//dialog.close();
+			Base.setSurvival(true);
+			new MissionInfoPane();
+			}
 		if (result.get() == helpButtonType) {
 			new HelpPane();
-			new PausePane();
+			new StartPane();
 		}
-		if (result.get() == restartButtonType) {
-			System.out.println("Should restart btn is clicked");
-			// new App(); ??
+		if (result.get() == quitButtonType) {
+			Platform.exit();
 		}
 	}
 }
