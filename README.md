@@ -3,6 +3,7 @@
 ## 1. About
 
 Describe your project here in 1-2 paragraphs.
+The project consists in creating an "tower defence" videogame. The goal is to have a gaming experience in which, the user through a propper GUI, must defend a certain road (= a direction in which an element moves) by the enemy (= an element that decrements a score, if reached certain coordinates). The game ends if there is no more enemy, and the user/the base has a certain health (= the score). We use the "JavaFX" library to emulate and display the game. The user can interact with the mouse on 2D elements displayed on the screen. 
 
 ### 1.1. Demo
 
@@ -12,9 +13,8 @@ Add a link to a demo of your project.
 
 This project was created by:
 
-* Student 1
-* Student 2
-* Student 3
+Felix Demetz Student ID: 20225
+Lucas Glück Stundet ID: 19084
 
 ## 3. Usage
 
