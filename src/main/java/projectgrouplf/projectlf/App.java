@@ -3,7 +3,11 @@ package projectgrouplf.projectlf;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 
 import javafx.event.ActionEvent;
@@ -24,6 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 public class App extends VBox {
     
@@ -50,7 +55,9 @@ public class App extends VBox {
     boolean buyButtonClicked = false;
     boolean gameRun = true; // boolean for Start and Pause btn
 
-    Timer gameTimer;
+    // public Timer gameTimer;
+    public int EnemyReleaser;
+    public Timeline timeline;
 
     public App() {
 
@@ -133,46 +140,51 @@ public class App extends VBox {
 
         pauseButton = new Button("Pause");
         pauseButton.setOnAction((ActionEvent event) -> {
-            gameTimer.cancel();
-            new PausePane();
+            timeline.pause();
+            // new PausePane();
         });
-        quitButton = new Button("Quit");
+        quitButton = new Button("Continue");
         quitButton.setOnAction((ActionEvent event) -> {
-            Platform.exit();
+            // Platform.exit();
+            timeline.play();
         });  
 
 
         startButton = new Button("Declare war");
-        startButton.setOnAction((ActionEvent event) -> {
+        startButton.setOnAction((ActionEvent event) -> { // https://stackoverflow.com/questions/26916640/javafx-not-on-fx-application-thread-when-using-timer
 
-            gameTimer = new Timer();
-            gameTimer.scheduleAtFixedRate(new TimerTask() { // https://stackoverflow.com/questions/26916640/javafx-not-on-fx-application-thread-when-using-timer
-                public void run() {
-                    Platform.runLater(() -> {
-
-                        for (int i = 0; i < inGameEnemyArray.size(); i++) { // this is the game
-                            checkIfEnemyReachedBase(inGameEnemyArray.get(i));
-                            if (inGameEnemyArray.size() == 0) {// HERE IS AN ERROR WHEN THERE IS NO ENEMY LEFT ON FIELD
-                                System.out.println("size 0 in the main for loop");
-                                break;
-                            }
-                            checkIfEnemyInDefenderRadius(inGameEnemyArray.get(i));
-                            inGameEnemyArray.get(i).enemyMovesForward(endingPoint, labelBaseHealth);
-                            if (inGameEnemyArray.size() == 0) {// HERE IS AN ERROR WHEN THERE IS NO ENEMY LEFT ON FIELD
-                                System.out.println("size 0 in the main for loop");
-                                break;
-                            }
+                timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), ev -> {
+                    for (int i = 0; i < inGameEnemyArray.size(); i++) { // this is the game
+                        checkIfEnemyReachedBase(inGameEnemyArray.get(i));
+                        if (inGameEnemyArray.size() == 0) {// HERE IS AN ERROR WHEN THERE IS NO ENEMY LEFT ON FIELD
+                            System.out.println("size 0 in the main for loop");
+                            break;
                         }
-                        addEnemyToGameArea(); // here should wait 
-                        updateLabels();
-                        if (Base.getBaseHealth() < 0) {
-                            gameTimer.cancel();
-                            displayEndPane();
-                            return;
+                        checkIfEnemyInDefenderRadius(inGameEnemyArray.get(i));
+                        inGameEnemyArray.get(i).enemyMovesForward(endingPoint, labelBaseHealth);
+                        if (inGameEnemyArray.size() == 0) {// HERE IS AN ERROR WHEN THERE IS NO ENEMY LEFT ON FIELD
+                            System.out.println("size 0 in the main for loop");
+                            break;
                         }
-                    });
-                }
-            }, 0, 100);
+                    }
+                    // try {
+                    //     TimeUnit.SECONDS.sleep(1);
+                    // } catch (InterruptedException e) {
+                    //     // TODO Auto-generated catch block
+                    //     e.printStackTrace();
+                    // }
+                    if (EnemyReleaser % 8 == 0) // here should wait 
+                        addEnemyToGameArea();
+                    updateLabels();
+                    EnemyReleaser++;
+                    if (Base.getBaseHealth() < 0) {
+                        // gameTimer.cancel();
+                        displayEndPane(); // is not able to show, but can pause and continue
+                        return;
+                    }
+                }));
+                timeline.setCycleCount(Animation.INDEFINITE);
+                timeline.play();
         });
 
 

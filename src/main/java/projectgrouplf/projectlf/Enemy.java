@@ -75,7 +75,7 @@ public class Enemy {
         boolean enemyNotReachedEnd = this.getEnemyCoordinate().getCoordinateX() < endingPoint.getX()+this.enemyCircle.getRadius();
         if (enemyNotReachedEnd) {// not reached and sec passes
             // SHOULD WE WORK HERE WITH TRANSITIONS?
-            this.setEnemyCoordinate(new Coordinate(this.enemyCoordinate.getCoordinateX() + 10, this.enemyCoordinate.getCoordinateY()));
+            this.setEnemyCoordinate(new Coordinate(this.enemyCoordinate.getCoordinateX() + 5, this.enemyCoordinate.getCoordinateY()));
             this.enemyHealthLabel.setLayoutX(enemyCoordinate.getCoordinateX() - this.enemyHealthLabel.getWidth()/2);
             this.enemyHealthLabel.setLayoutY(enemyCoordinate.getCoordinateY() - this.enemyHealthLabel.getHeight()/2);
         }
