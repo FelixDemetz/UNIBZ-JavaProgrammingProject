@@ -23,9 +23,6 @@ public class Base { // should it be static?
     public static void setBaseMoney(int newBaseMoney) {
         Base.baseMoney = newBaseMoney;
     }
-    public static void setSurvival(boolean a) {
-        Base.survival = a;
-    }
     public static void survivalOrNormalBaseHealt() {
         if (survival)
             setBaseHealth(1);

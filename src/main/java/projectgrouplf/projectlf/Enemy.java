@@ -65,17 +65,16 @@ public class Enemy {
         return enemyHealthLabel;
     }
     // Setters
-    /** The met has as parameter a new Coordinate() which is the new coordinate of the enemy, sets the circle **/
-    public void setEnemyCoordinate(Coordinate enemyCoordinate) {
+    /** The met has as parameter a new Coordinate() which is the new coordinate of the enemy, sets the circle */
+    private void setEnemyCoordinate(Coordinate enemyCoordinate) {
         this.enemyCoordinate =  enemyCoordinate;
         this.enemyCircle.setCenterX(enemyCoordinate.getCoordinateX());
         this.enemyCircle.setCenterY(enemyCoordinate.getCoordinateY());
     }
-    public void enemyMovesForward(Rectangle endingPoint, Label labelBaseHealth) {
+    public void enemyMovesForward(double nrPixelMove, Rectangle endingPoint) {
         boolean enemyNotReachedEnd = this.getEnemyCoordinate().getCoordinateX() < endingPoint.getX()+this.enemyCircle.getRadius();
-        if (enemyNotReachedEnd) {// not reached and sec passes
-            // SHOULD WE WORK HERE WITH TRANSITIONS?
-            this.setEnemyCoordinate(new Coordinate(this.enemyCoordinate.getCoordinateX() + 2.5, this.enemyCoordinate.getCoordinateY()));
+        if (enemyNotReachedEnd) {
+            this.setEnemyCoordinate(new Coordinate(this.enemyCoordinate.getCoordinateX() + nrPixelMove, this.enemyCoordinate.getCoordinateY()));
             this.enemyHealthLabel.setLayoutX(enemyCoordinate.getCoordinateX() - this.enemyHealthLabel.getWidth()/2);
             this.enemyHealthLabel.setLayoutY(enemyCoordinate.getCoordinateY() - this.enemyHealthLabel.getHeight()/2);
         }

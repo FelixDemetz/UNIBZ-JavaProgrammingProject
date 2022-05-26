@@ -31,7 +31,7 @@ public class StartPane {
 		}
 		if (result.get() == playSurvivalButtonType) {
 			//dialog.close();
-			Base.setSurvival(true);
+			Base.survival = true;
 			new MissionInfoPane();
 			}
 		if (result.get() == helpButtonType) {

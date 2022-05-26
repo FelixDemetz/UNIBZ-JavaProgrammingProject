@@ -28,6 +28,7 @@ public class PausePane extends App{
 			Platform.exit();
 		}
 		if (result.get() == continueButtonType) {
+			timeline.play();
 			dialog.close();
 		}
 		if (result.get() == helpButtonType) {

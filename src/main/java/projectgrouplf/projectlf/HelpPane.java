@@ -17,7 +17,7 @@ public class HelpPane {
 		ButtonType backButtonType = new ButtonType("OK");
 
 		dialog.getButtonTypes().setAll(backButtonType);
-
+		System.out.println("please pause");
     	dialog.setContentText("Here is a short guide how to defend \"Blues\" freedom");
 		Optional<ButtonType> result = dialog.showAndWait();
 		if (result.get() == backButtonType) {
