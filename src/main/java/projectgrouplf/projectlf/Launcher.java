@@ -9,7 +9,6 @@ public class Launcher extends Application {
 
     public void start(Stage primaryStage) {
         Scene scene = new Scene(new App(), 1150, 450);
-        //primaryStage.setMaximized(true); // so the window is fullscreen
         primaryStage.setTitle("Blood for Freedom");
         primaryStage.setScene(scene);
         primaryStage.show();

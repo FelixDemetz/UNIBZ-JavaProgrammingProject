@@ -8,7 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 
-public class PausePane extends App{
+public class PausePane {
 
 	public PausePane() {
 		Alert dialog = new Alert(AlertType.INFORMATION);
@@ -28,7 +28,7 @@ public class PausePane extends App{
 			Platform.exit();
 		}
 		if (result.get() == continueButtonType) {
-			timeline.play();
+			// timeline.play();
 			dialog.close();
 		}
 		if (result.get() == helpButtonType) {

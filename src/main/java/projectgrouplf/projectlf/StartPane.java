@@ -14,14 +14,15 @@ public class StartPane {
     	dialog.setTitle("Launcher");
     	dialog.setHeaderText("Blood for Freedom");
 		dialog.setGraphic(null);
+		// dialog.getDialogPane().setPrefSize(200, 100);
 		
 		ButtonType playButtonType = new ButtonType("Play");
 		ButtonType playSurvivalButtonType = new ButtonType("Play Survival");
 		ButtonType helpButtonType = new ButtonType("Help");
 		ButtonType quitButtonType = new ButtonType("Quit");
 
-		dialog.getButtonTypes().setAll(playButtonType, playSurvivalButtonType, helpButtonType, quitButtonType);
-		dialog.setContentText("by Felix Demetz and Lucas Glick \n\n v0.9");
+		dialog.getButtonTypes().setAll(playButtonType, playSurvivalButtonType, quitButtonType);
+		dialog.setContentText("Tower defence game by Felix Demetz and Lucas Glick \n\n v 1.0 \n");
 		
 
 		Optional<ButtonType> result = dialog.showAndWait();
