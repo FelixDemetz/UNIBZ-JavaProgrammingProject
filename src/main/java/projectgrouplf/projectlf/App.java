@@ -1,9 +1,6 @@
 package projectgrouplf.projectlf;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -15,7 +12,6 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -58,6 +54,8 @@ public class App extends VBox {
     // public Timer gameTimer;
     public int EnemyReleaser;
     public Timeline timeline;
+
+    KeyFrame keyFrame;
 
     public App() {
 
@@ -167,13 +165,11 @@ public class App extends VBox {
                 addEnemyToGameArea();
             updateLabels();
             EnemyReleaser++;
-            if (Base.getBaseHealth() < 0) {
-                System.out.println("please pause");
-                timeline.stop();
-                timeline.getKeyFrames().clear();
-                System.out.println("RUDI");
-                timeline.setCycleCount(0);
-                new HelpPane();
+            if (Base.getBaseHealth() < 0 || Base.getBaseMoney() < 0 || inGameEnemyArray.size() == 0 && Base.getBaseHealth() > 0) {
+                timeline.pause();
+                Platform.runLater(()-> { // this is needed, so the met in EndPane "showAndWait()" does not throw Exception in thread "JavaFX Application Thread" java.lang.IllegalStateException: showAndWait is not allowed during animation or layout processing
+                    displayEndPane();
+                });
             }
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -313,12 +309,14 @@ public class App extends VBox {
     /** met checks if the game is finished 
      * @return **/
     private void displayEndPane() {
-        if (Base.getBaseHealth() < 0)
+        Platform.runLater(()-> {
+            if (Base.getBaseHealth() < 0)
             new EndPane(1);
         if (Base.getBaseMoney() < 0)
             new EndPane(2);
         if (enemyArray.size() == 0 && inGameEnemyArray.size() == 0 && Base.getBaseHealth() > 0)
             new EndPane(3);
+        });
     }
     /** The met updates the Labels (the text Health, Money, the game description and the health of every Enemy) **/
     private void updateLabels() {

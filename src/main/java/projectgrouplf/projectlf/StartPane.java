@@ -21,8 +21,9 @@ public class StartPane {
 		ButtonType quitButtonType = new ButtonType("Quit");
 
 		dialog.getButtonTypes().setAll(playButtonType, playSurvivalButtonType, helpButtonType, quitButtonType);
-		dialog.setContentText("by Felix Demetz and Lucas Glick");
+		dialog.setContentText("by Felix Demetz and Lucas Glick \n\n v0.9");
 		
+
 		Optional<ButtonType> result = dialog.showAndWait();
 		if (result.get() == playButtonType) {
 			dialog.close();
