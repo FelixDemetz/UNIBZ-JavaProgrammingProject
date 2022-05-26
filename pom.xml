@@ -16,6 +16,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.10</version>
+        </dependency>
+        <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>17.0.1</version>
@@ -51,6 +56,42 @@
                     <target>17</target>
                 </configuration>
             </plugin>
+
+            <plugin> <!-- needed to execute maven (cmd: "mvn exec:exec") -->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                  <executions>
+                    <execution>
+                        <id>my-execution</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>java</goal> <!-- maybe "javafx-maven-plugin" -->
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>projectgrouplf.projectlf.Launcher</mainClass>
+                </configuration>
+            </plugin>
+
+            <plugin> <!-- needed to create jar file?? -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                <archive>
+                    <index>true</index>
+                    <manifest>
+                    <addClasspath>true</addClasspath>
+                    <classpathPrefix>${settings.localRepository}</classpathPrefix>
+                    <classpathLayoutType>repository</classpathLayoutType>
+                    <mainClass>projectgrouplf.projectlf.Launcher</mainClass>
+                    </manifest>
+                </archive>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -60,7 +101,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>projectgrouplf.projectlf/projectgrouplf.projectlf.HelloApplication</mainClass>
+                            <mainClass>projectgrouplf.projectlf.Laucher</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
