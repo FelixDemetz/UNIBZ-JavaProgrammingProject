@@ -5,6 +5,7 @@ public class Base { // should it be static?
     public static boolean survival = false;
     private static int baseHealth;
     private static int baseMoney = 999999; // should be 100
+    private static int initialBaseMoney = baseMoney;
 
     public Base() {
     }
@@ -28,6 +29,9 @@ public class Base { // should it be static?
             setBaseHealth(1);
         else
             setBaseHealth(10);
+    }
+    public static void resetBaseMoney() {
+        Base.baseMoney = initialBaseMoney;
     }
 
     
