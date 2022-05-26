@@ -24,6 +24,7 @@ public class Enemy {
         this.enemyHealthLabel.setLayoutY(enemyCoordinate.getCoordinateY() - this.enemyHealthLabel.getHeight());
         setEnemyRank(enemyRank);
     }
+    
 
     /** This is the most important met for the enemy it defines the rank (damage, health, money and size) **/
     private Enemy setEnemyRank(int enemyRank) {
