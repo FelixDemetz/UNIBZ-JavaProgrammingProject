@@ -7,8 +7,9 @@ import javafx.stage.Stage;
 
 public class Launcher extends Application {
 
+    @Override
     public void start(Stage primaryStage) {
-        Scene scene = new Scene(new App(), 1150, 450);
+        Scene scene = new Scene(new App(), 1025, 450);
         primaryStage.setTitle("Blood for Freedom");
         primaryStage.setScene(scene);
         primaryStage.show();

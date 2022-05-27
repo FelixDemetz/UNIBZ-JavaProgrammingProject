@@ -37,8 +37,6 @@ public class App extends VBox {
     private HBox mainArea;
     private VBox leftArea;
     private VBox topLeftArea;
-    private VBox centerLeftArea;
-    private VBox bottomLeftArea;
     private VBox storeArea;
     private Pane gamePane;
                                                   
@@ -152,27 +150,14 @@ public class App extends VBox {
 
 
         // the buttonsArea
-        topLeftArea = new VBox(labelBaseHealth, labelBaseMoney);
+        topLeftArea = new VBox(labelBaseHealth, labelBaseMoney, pausePlayButton);
         topLeftArea.setPrefSize(125, 125);
         topLeftArea.setSpacing(10); // space betweeen V/HBox elements
         topLeftArea.setAlignment(Pos.CENTER);
         topLeftArea.setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
-        
-        // the area with the game description
-        centerLeftArea = new VBox(labelBuyDefenderInfo);
-        centerLeftArea.setPrefSize(125, 200);
-        centerLeftArea.setSpacing(10); // space betweeen V/HBox elements
-        centerLeftArea.setAlignment(Pos.CENTER);
-        centerLeftArea.setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
-        // the bottomLeftArea;
-        bottomLeftArea = new VBox(pausePlayButton);
-        bottomLeftArea.setPrefSize(125, 125);
-        bottomLeftArea.setSpacing(10); // space betweeen V/HBox elements
-        bottomLeftArea.setAlignment(Pos.CENTER);
-        bottomLeftArea.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
         // the storeArea
         storeArea = new VBox(labelStoreTitle, buySmallDefenderButton, buyNormalDefenderButton, buyBigDefenderButton);
-        storeArea.setPrefSize(125, 20);
+        storeArea.setPrefSize(125, 325);
         storeArea.setSpacing(20); // space betweeen V/HBox elements
         storeArea.setAlignment(Pos.CENTER);
         storeArea.setBackground(new Background(new BackgroundFill(Color.rgb(73, 95, 31), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -186,8 +171,8 @@ public class App extends VBox {
         gamePane.setPrefSize(900, 450);
         gamePane.setBackground(new Background(new BackgroundFill(Color.ANTIQUEWHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
-        leftArea = new VBox(topLeftArea, centerLeftArea, bottomLeftArea);
-        mainArea = new HBox(leftArea, storeArea, gamePane);
+        leftArea = new VBox(topLeftArea, storeArea);
+        mainArea = new HBox(leftArea, gamePane);
 
         setSpacing(20);
         setAlignment(Pos.CENTER);
@@ -302,7 +287,7 @@ public class App extends VBox {
     /** Converts the mouseposition click into a coordinate and places there a new Defender */
     private void getMouseCoordinateClick(MouseEvent event) {
         if (buyButtonClicked) {
-            Coordinate c = new Coordinate(event.getX()-250, event.getY()); // -250 and - 170 default (if scene 1600 and 900)
+            Coordinate c = new Coordinate(event.getX()-125, event.getY()); // -125 bcs there is the "leftArea"
             if (gamePane.contains(c.getCoordinateX(), c.getCoordinateY())) {
                 if (defenderRank == 1) {
                     defenderArray.add(new Defender(c, defenderRank));
@@ -319,7 +304,6 @@ public class App extends VBox {
                 addDefenderToGameArea();
                 updateLabels();
             }
-            displayEndPane();
             buyButtonClicked = false;
         }
         return;
@@ -402,15 +386,15 @@ public class App extends VBox {
 		dialog.getButtonTypes().setAll(continueButtonType, restartButtonType, quitButtonType);
 
 		Optional<ButtonType> result = dialog.showAndWait();
-		if (result.get() == quitButtonType) {
-            Platform.exit();
-        }
 		if (result.get() == continueButtonType) {
 			dialog.close();
 		}
 		if (result.get() == restartButtonType) {
             dialog.close();
             resetGame();
+        }
+        if (result.get() == quitButtonType) {
+            Platform.exit();
         }
     }
 
