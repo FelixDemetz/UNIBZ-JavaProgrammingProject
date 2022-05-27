@@ -33,7 +33,7 @@ public class App extends VBox {
     
     public Label labelBaseHealth, labelBaseMoney, labelBuyDefenderInfo, labelStoreTitle;
 
-    private Button buySmallDefenderButton, buyNormalDefenderButton, buyBigDefenderButton, pausePlayButton, restartButton, quitButton;
+    private Button buySmallDefenderButton, buyNormalDefenderButton, buyBigDefenderButton, pausePlayButton;
     private HBox mainArea;
     private VBox leftArea;
     private VBox topLeftArea;
@@ -114,25 +114,9 @@ public class App extends VBox {
         pausePlayButton = new Button();
         pausePlayButton.setText("Pause");
         pausePlayButton.setOnAction((ActionEvent event) -> {
-            if (gameRun == false) {
-                timeline.play();
-                pausePlayButton.setText("Pause");
-                gameRun = true;
-            }
-            else {
-                timeline.pause();
-                pausePlayButton.setText("Continue");
-                gameRun = false;
-            }
-        });
-        restartButton = new Button("Restart");
-        restartButton.setOnAction((ActionEvent event) -> { // reset copiet form the App class
-            resetGame();
-        });
-
-        quitButton = new Button("Quit");
-        quitButton.setOnAction((ActionEvent event) -> {
-            Platform.exit();
+            timeline.pause();
+            pauseGame();
+            timeline.play();
         });
 
         // THIS IS THE GAME
@@ -156,7 +140,7 @@ public class App extends VBox {
             updateLabels();
             enemyReleaser++;
             // boolean gameFinished = (Base.getBaseMoney() < 0 || (initialEnemyArray.size() == 0 && inGameEnemyArray.size() == 0 && Base.getBaseHealth() > 0 && Base.getBaseMoney() >= 0));
-            if (Base.getBaseMoney() < 0) { // ends game
+            if (Base.getBaseHealth() <= 0 || Base.getBaseMoney() < 0 || (initialEnemyArray.size() == 0 && inGameEnemyArray.size() == 0 && Base.getBaseHealth() > 0)) { // ends game
                 timeline.pause();
                 Platform.runLater(()-> { // this is needed, so the met in EndPane "showAndWait()" does not throw Exception in thread "JavaFX Application Thread" java.lang.IllegalStateException: showAndWait is not allowed during animation or layout processing
                     displayEndPane();
@@ -181,7 +165,7 @@ public class App extends VBox {
         centerLeftArea.setAlignment(Pos.CENTER);
         centerLeftArea.setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
         // the bottomLeftArea;
-        bottomLeftArea = new VBox(pausePlayButton, restartButton, quitButton);
+        bottomLeftArea = new VBox(pausePlayButton);
         bottomLeftArea.setPrefSize(125, 125);
         bottomLeftArea.setSpacing(10); // space betweeen V/HBox elements
         bottomLeftArea.setAlignment(Pos.CENTER);
@@ -209,7 +193,6 @@ public class App extends VBox {
         setAlignment(Pos.CENTER);
         getChildren().add(mainArea);
     }
-
 
 
     /** Resetes the game. Stops the timeline, resets the Base data (health and money), clears the arrays containing
@@ -294,7 +277,7 @@ public class App extends VBox {
                 removeEnemy(enemy);
                 System.out.println("Commie dead");
             }
-            if (inGameEnemyArray.size() == 0) { // HERE IS AN ERROR WHEN THERE IS NO ENEMY LEFT ON FIELD
+            if (inGameEnemyArray.size() == 0) { // may be true if the removeEnemy met removes the last one
                 return;
             }
         }
@@ -344,7 +327,7 @@ public class App extends VBox {
 
     /** Checks if the game is finished and opens the EndPane() class */
     private void displayEndPane() {
-        if (Base.getBaseHealth() < 0)
+        if (Base.getBaseHealth() <= 0)
             showEndPane(1);
         if (Base.getBaseMoney() < 0)
             showEndPane(2);
@@ -382,12 +365,14 @@ public class App extends VBox {
                 break;
             case 3: // no more Enemies
                 dialog.setHeaderText("You Won?");
-                dialog.setContentText("No more Enemy, no more Red, just Blue flags everywere, everybody is happy"
+                dialog.setContentText("No more Enemies, no more Reds, just Blue flags everywere, everybody is happy..."
                     + "\n"
-                    + "\nAs the days passes on, you slowly start to doubt"
+                    + "\nAs the days passes on, you slowly start to doubt:"
+                    + "\n"
                     + "\nwho was the Defender and who the Enemy,"
                     + "\nwho was the invador and who the victim,"
                     + "\nwho is the good and who is the bad one."
+                    + "\n"
                     + "\nbut \"the winner is always right\", or isn't it..."
                     + "\n");
                 break;
@@ -400,7 +385,34 @@ public class App extends VBox {
             dialog.close();
             resetGame();
         }
-	}
+	}   
+    /** 
+     *
+    **/
+    private void pauseGame() {
+        Alert dialog = new Alert(AlertType.INFORMATION);
+    	dialog.setTitle("Pause");
+    	dialog.setHeaderText(null);
+		dialog.setGraphic(null);
+		
+		ButtonType continueButtonType = new ButtonType("Continue");
+		ButtonType restartButtonType = new ButtonType("Restart");
+		ButtonType quitButtonType = new ButtonType("Quit");
+
+		dialog.getButtonTypes().setAll(continueButtonType, restartButtonType, quitButtonType);
+
+		Optional<ButtonType> result = dialog.showAndWait();
+		if (result.get() == quitButtonType) {
+            Platform.exit();
+        }
+		if (result.get() == continueButtonType) {
+			dialog.close();
+		}
+		if (result.get() == restartButtonType) {
+            dialog.close();
+            resetGame();
+        }
+    }
 
     /** Updates the Labels (the text Health, Money, the game description and the health of every Enemy) */
     private void updateLabels() {

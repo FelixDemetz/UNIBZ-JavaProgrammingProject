@@ -18,11 +18,13 @@ public class StartPane {
 		
 		ButtonType playButtonType = new ButtonType("Play");
 		ButtonType playSurvivalButtonType = new ButtonType("Play Survival");
-		ButtonType helpButtonType = new ButtonType("Help");
+		ButtonType helpButtonType = new ButtonType("Quide");
 		ButtonType quitButtonType = new ButtonType("Quit");
 
-		dialog.getButtonTypes().setAll(playButtonType, playSurvivalButtonType, quitButtonType);
-		dialog.setContentText("Tower defence game by Felix Demetz and Lucas Glick \n\n v 1.0 \n");
+		dialog.getButtonTypes().setAll(playButtonType, playSurvivalButtonType, helpButtonType, quitButtonType);
+		dialog.setContentText("Tower defence game by Felix Demetz and Lucas Glick \n\n v 1.0 \n"
+		+ "\n"
+		+ "\nfor first time players pls click on \"Quide\".\nfor vets, u now the drill :)");
 		
 
 		Optional<ButtonType> result = dialog.showAndWait();

@@ -87,7 +87,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <!-- Default configuration for running with: mvn clean javafx:run -->
-                <configuration>
+                    <configuration>
                         <mainClass>projectgrouplf/projectgrouplf.Launcher</mainClass>
                         <compress>2</compress> <!-- To zip -->
                         <launcher>app</launcher>
@@ -96,7 +96,7 @@
                         <noManPages>true</noManPages>
                         <stripDebug>true</stripDebug>
                         <noHeaderFiles>true</noHeaderFiles>
-                        </configuration>
+                    </configuration>
             </plugin>
         </plugins>
     </build>
