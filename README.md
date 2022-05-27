@@ -29,7 +29,7 @@ mvn package
 To do X, run:
 
 ```
-mvn abc
+mvn javafx:run (instead of mvn exec:exec)
 ```
 
 ## 4. Implementation
