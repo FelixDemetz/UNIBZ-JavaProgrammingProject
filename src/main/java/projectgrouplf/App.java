@@ -1,8 +1,19 @@
 package projectgrouplf;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 import java.util.Random;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -60,6 +71,10 @@ public class App extends VBox {
     /** Adds an Enemy to the gamePane / gets a hit by a Defender every X times */
     private int enemyReleaser;
     private Timeline timeline;
+
+    /** For the endPane, the userData */
+    private String userDataString;
+    private File scoreBoard = new File(Base.scoreBoardRelativePath);
 
     public App() {
 
@@ -128,8 +143,9 @@ public class App extends VBox {
                 checkIfEnemyReachedBase(inGameEnemyArray.get(i));
                 if (enemyReleaser % 32 == 0) // how often Defence damages Enemy 
                     checkIfEnemyInDefenderRadius(inGameEnemyArray.get(i));
-                if (inGameEnemyArray.size() == i)
+                if (inGameEnemyArray.size() == i) {
                     break;
+                }
                 inGameEnemyArray.get(i).enemyMovesForward(2.5, endingPoint);
                 i++;
             }
@@ -255,12 +271,10 @@ public class App extends VBox {
         for (int i = 0; i < defenderArray.size(); i++) { // in the if it checks if one of the 4 enemies circles points (top, bottom, left or right) is contained in the defenderAttacCircle
             if (defenderArray.get(i).defenderAttackCircle.contains(enemyNordPoint) || defenderArray.get(i).defenderAttackCircle.contains(enemySudPoint) || defenderArray.get(i).defenderAttackCircle.contains(enemyWestPoint) || defenderArray.get(i).defenderAttackCircle.contains(enemyEastPoint)) {
                 enemy.setEnemyHealth(enemy.getEnemyHealth() - defenderArray.get(i).getDefenderDamage());
-                System.out.println("Commie was hit");
             }
             if (enemy.getEnemyHealth() <= 0) { // if the enemy has no more health
                 Base.setBaseMoney(Base.getBaseMoney() + enemy.getEnemyMoney());
                 removeEnemy(enemy);
-                System.out.println("Commie dead");
             }
             if (inGameEnemyArray.size() == 0) { // may be true if the removeEnemy met removes the last one
                 return;
@@ -322,14 +336,48 @@ public class App extends VBox {
 
     /** Opens a new Alert Pane with three different textes regarding the input parameter (1, 2, lose and 3 for win) */
     public void showEndPane(int endNr) {
+
+        JFrame f =new JFrame("Register");  
+        final JLabel l = new JLabel("Enter Username");
+        final JTextArea jTextArea = new JTextArea("Enter Username");
+
+        final JTextField tf=new JTextField("username");  
+        tf.setBounds(50,50, 150,20);  
+        JButton b = new JButton("OK");
+
+        b.addActionListener (e ->
+            {
+                if (false == tf.getText().isEmpty()) {
+                    String userName = new String(tf.getText());
+                    String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+                    userDataString = new String("Player: " + userName + ", Health: " + Base.getBaseHealth()+ ", Money: " + Base.getBaseMoney()+ ", Game mode: " + Base.getBaseGameMode() + ", Date: " + date + ".");
+
+                    addUsertoScoreBoard();
+                }
+                f.setVisible(false);
+            });
+        b.setBounds(12,100,95,30);  
+        l.setBounds(12, 12, 150, 50);
+        tf.setBounds(12, 75, 150, 20);
+        f.add(l); f.add(b); f.add(tf);  
+        f.setSize(200,200);  
+        f.setResizable(false);
+
+        f.setAlwaysOnTop(true);
+        f.setAutoRequestFocus(true);
+
+        f.setLayout(null);
+
+        
     	Alert dialog = new Alert(AlertType.INFORMATION);
     	dialog.setTitle("Game Finished");
         dialog.setGraphic(null);
 
+        ButtonType addUserButtonType = new ButtonType("Add User");
 		ButtonType restartButtonType = new ButtonType("Restart");
 		ButtonType quitButtonType = new ButtonType("Quit");
 
-		dialog.getButtonTypes().setAll(restartButtonType, quitButtonType);
+		dialog.getButtonTypes().setAll(addUserButtonType, restartButtonType, quitButtonType);
 
         switch(endNr) {
             case 1: // no more Base Health
@@ -362,6 +410,14 @@ public class App extends VBox {
                 break;
           }
         Optional<ButtonType> result = dialog.showAndWait();
+        if (result.get() == addUserButtonType) {
+            // getChildren().removeAll(mainArea);
+            // getChildren().add(storeArea);
+            // this.setVisible(false);
+            f.setVisible(true);
+            showEndPane(endNr);
+            
+        }
         if (result.get() == quitButtonType) {
             Platform.exit();
         }
@@ -369,7 +425,20 @@ public class App extends VBox {
             dialog.close();
             resetGame();
         }
-	}   
+	}
+
+    /** Adds to the current Score Board text (.txt) file the current content and the new User with the Userdata */
+    private void addUsertoScoreBoard() {
+        String oldScoreBoard = Base.readUserScoreBoard();
+        
+        try (FileWriter writer = new FileWriter(scoreBoard)) {
+            writer.append(oldScoreBoard);
+            writer.append(userDataString);
+        } catch (IOException e2) {
+            e2.printStackTrace();
+        }
+    }
+
     /** 
      *
     **/
