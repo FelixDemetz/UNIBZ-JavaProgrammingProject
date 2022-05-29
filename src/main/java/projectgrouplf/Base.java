@@ -39,7 +39,7 @@ public class Base { // should it be static?
         Base.baseMoney = newBaseMoney;
     }
     public static void survivalOrNormalBaseHealt() {
-        if (survival)
+        if (Base.survival)
             setBaseHealth(1);
         else
             setBaseHealth(10);

@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Random;
-
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -16,9 +16,12 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -30,11 +33,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+
 public class App extends VBox {
     
     public Label labelBaseHealth, labelBaseMoney, labelBuyDefenderInfo, labelStoreTitle, labelUserAdded;
 
-    private Button buySmallDefenderButton, buyNormalDefenderButton, buyBigDefenderButton, pausePlayButton, continueButton, quideButton;
+    private Button buySmallDefenderButton, buyNormalDefenderButton, buyBigDefenderButton, pausePlayButton, continueButton, guideButton, playNormalButton, playSurvivalButton, scoreBoardButton, backToMenuButton;
     private Button addUserButton, restartButton, quitButton;
     private HBox mainArea;
     private VBox leftArea;
@@ -45,7 +49,7 @@ public class App extends VBox {
     private VBox endGameArea;
     private HBox addUserBox;
     private VBox pauseGameArea;
-    private HBox pauseBtnBox;
+    private VBox startGameArea;
 
     private TextField textField =new TextField(""); 
                                                   
@@ -73,6 +77,8 @@ public class App extends VBox {
     /** For the endPane, the userData */
     private String userDataString;
     private File scoreBoard = new File(Base.scoreBoardRelativePath);
+    ArrayList<Player> arrayListPlayerNormal = new ArrayList<>();
+	ArrayList<Player> arrayListPlayerSurvival = new ArrayList<>(); 
 
     public App() {
 
@@ -103,6 +109,7 @@ public class App extends VBox {
         
         // buttons
         buySmallDefenderButton = new Button("Lil Uzi 25$");
+        buySmallDefenderButton.setPrefWidth(100);
         buySmallDefenderButton.setOnAction((ActionEvent event) -> {
             buyButtonClicked = true;
             defenderRank = 1;
@@ -110,40 +117,89 @@ public class App extends VBox {
             setOnMouseClicked(this::getMouseCoordinateClick);
         });
         buyNormalDefenderButton = new Button("Agent O. 50$");
+        buyNormalDefenderButton.setPrefWidth(100);
         buyNormalDefenderButton.setOnAction((ActionEvent event) -> {
             buyButtonClicked = true;
             defenderRank = 2;
             setOnMouseClicked(this::getMouseCoordinateClick);
         });
         buyBigDefenderButton = new Button("Big Berta 80$");
+        buyBigDefenderButton.setPrefWidth(100);
         buyBigDefenderButton.setOnAction((ActionEvent event) -> {
             buyButtonClicked = true;
             defenderRank = 3;
             setOnMouseClicked(this::getMouseCoordinateClick);
         });
 
+        playNormalButton = new Button();
+        playNormalButton.setText("Play");
+        playNormalButton.setPrefWidth(100);
+        playNormalButton.setOnAction((ActionEvent event) -> {
+            Base.survival = false;
+            Base.survivalOrNormalBaseHealt();
+            getChildren().remove(startGameArea);
+            getChildren().add(mainArea);
+            new MissionInfoPane();
+            timeline.play();
+        });
+        playSurvivalButton = new Button();
+        playSurvivalButton.setText("Play Survival");
+        playSurvivalButton.setPrefWidth(100);
+        playSurvivalButton.setOnAction((ActionEvent event) -> {
+            Base.survival = true;
+            Base.survivalOrNormalBaseHealt();
+            getChildren().remove(startGameArea);
+            getChildren().add(mainArea);
+            new MissionInfoPane();
+            timeline.play();
+        });
+        scoreBoardButton = new Button();
+        scoreBoardButton.setText("Score Board");
+        scoreBoardButton.setPrefWidth(100);
+        scoreBoardButton.setOnAction((ActionEvent event) -> {
+            Alert scoreBoard = new Alert(AlertType.INFORMATION);
+    		scoreBoard.setTitle("Score Board");
+    		scoreBoard.setHeaderText(null);
+			scoreBoard.setGraphic(null);
+
+			if (Base.readUserScoreBoard().matches("^$"))
+				scoreBoard.setContentText("* No score registerd *");
+			else
+				scoreBoard.setContentText(Base.readUserScoreBoard());
+
+			ButtonType backButtonType = new ButtonType("Back");
+			scoreBoard.getButtonTypes().setAll(backButtonType);
+			Optional<ButtonType> result2 = scoreBoard.showAndWait();
+			if (result2.get() == backButtonType) {
+				scoreBoard.close();
+			}
+        });
         pausePlayButton = new Button();
         pausePlayButton.setText("Pause");
+        pausePlayButton.setPrefWidth(100);
         pausePlayButton.setOnAction((ActionEvent event) -> {
             timeline.pause();
             pauseGame();
         });
         continueButton = new Button();
         continueButton.setText("Resume");
+        continueButton.setPrefWidth(100);
         continueButton.setOnAction((ActionEvent event) -> {
             getChildren().remove(pauseGameArea);
             getChildren().add(mainArea);
             timeline.play();
         });
-        quideButton = new Button();
-        quideButton.setText("Guide");
-        quideButton.setOnAction((ActionEvent event) -> {
+        guideButton = new Button();
+        guideButton.setText("Guide");
+        guideButton.setPrefWidth(100);
+        guideButton.setOnAction((ActionEvent event) -> {
             new HelpPane();
         });
 
-         addUserButton = new Button();
-         addUserButton.setText("Add User");
-         addUserButton.setOnAction((ActionEvent event) -> {
+        addUserButton = new Button();
+        addUserButton.setText("Add User");
+        addUserButton.setPrefWidth(100);
+        addUserButton.setOnAction((ActionEvent event) -> {
             if (false == textField.getText().isEmpty()) {
                 String userName = new String(textField.getText());
                 String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
@@ -158,22 +214,32 @@ public class App extends VBox {
         });
         restartButton = new Button();
         restartButton.setText("Restart");
+        restartButton.setPrefWidth(100);
         restartButton.setOnAction((ActionEvent event) -> {
             resetGame();
             getChildren().remove(endGameArea); // remove both bcs this btn is used in both
             getChildren().remove(pauseGameArea);
             getChildren().add(mainArea);
         });
+        backToMenuButton = new Button();
+        backToMenuButton.setText("Back to Menu");
+        backToMenuButton.setPrefWidth(100);
+        backToMenuButton.setOnAction((ActionEvent event) -> {
+            resetGame();
+            timeline.pause();
+            getChildren().remove(endGameArea); // remove both bcs this btn is used in both
+            getChildren().remove(pauseGameArea);
+            showStartPane();
+        });
         quitButton = new Button();
         quitButton.setText("Quit");
+        quitButton.setPrefWidth(100);
         quitButton.setOnAction((ActionEvent event) -> {
             Platform.exit();
         });
 
         // THIS IS THE GAME
-        new StartPane();
-        // Base
-        Base.survivalOrNormalBaseHealt();
+        showStartPane();
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.025), ev -> { // normal speed: 0.025?
             int i = 0;
@@ -195,12 +261,12 @@ public class App extends VBox {
             if (Base.getBaseHealth() <= 0 || Base.getBaseMoney() < 0 || (initialEnemyArray.size() == 0 && inGameEnemyArray.size() == 0 && Base.getBaseHealth() > 0)) { // ends game
                 timeline.pause();
                 Platform.runLater(()-> { // this is needed, so the met in EndPane "showAndWait()" does not throw Exception in thread "JavaFX Application Thread" java.lang.IllegalStateException: showAndWait is not allowed during animation or layout processing
-                    displayEndPane();
+                    choosesEndPane();
                 });
             }
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+        timeline.pause();
 
 
         // the buttonsArea
@@ -230,7 +296,6 @@ public class App extends VBox {
 
         setSpacing(20);
         setAlignment(Pos.CENTER);
-        getChildren().add(mainArea);
     }
 
 
@@ -362,7 +427,7 @@ public class App extends VBox {
     }
 
     /** Checks if the game is finished and opens the EndPane() class */
-    private void displayEndPane() {
+    private void choosesEndPane() {
         if (Base.getBaseHealth() <= 0)
             showEndPane(1);
         if (Base.getBaseMoney() < 0)
@@ -372,37 +437,123 @@ public class App extends VBox {
         }
     }
 
-    /** Checks if the game is finished and opens the EndPane() class */
-    private void showMissionInfo() {
-        if (Base.getBaseHealth() <= 0)
-            showEndPane(1);
-        if (Base.getBaseMoney() < 0)
-            showEndPane(2);
-        if (initialEnemyArray.size() == 0 && inGameEnemyArray.size() == 0 && Base.getBaseHealth() > 0) {
-            showEndPane(3);
-        }
+    /**  */
+    private void showStartPane() {
+        Label title = new Label("Blood for Freedom");
+        Label textMadaByUs = new Label("              Tower Defense game by Felix Demetz und Lucas Glück v1.2");
+        title.setAlignment(Pos.CENTER);
+        title.setTextFill(Color.rgb(255, 30, 70));
+        title.setStyle("-fx-font-size: 30px;");
+        textMadaByUs.setAlignment(Pos.BOTTOM_LEFT);
+        textMadaByUs.setTextFill(Color.WHITE);
+
+        String bestPlayerString = "* No Player *";
+		String bestSurvivalPlayerString = "* No Player *";
+
+        Label text = new Label();
+        text.setAlignment(Pos.CENTER);
+        text.setTextFill(Color.WHITE);
+
+        VBox mainBox = new VBox(title, text, playNormalButton, playSurvivalButton, guideButton, scoreBoardButton, quitButton);
+        mainBox.setAlignment(Pos.CENTER);
+        mainBox.setSpacing(20);
+
+        startGameArea = new VBox(mainBox, textMadaByUs);
+        setBackground(new Background(new BackgroundFill(Color.rgb(30, 30, 30), CornerRadii.EMPTY, Insets.EMPTY)));
+		
+        setBestPlayers(); // sets up two list with all the Players
+		Player bestNormal = getBestPlayer(arrayListPlayerNormal);
+		if (bestNormal != null) // if there was at least one
+			bestPlayerString = bestNormal.playerName;
+		Player bestSurvival = getBestPlayer(arrayListPlayerSurvival);
+		if (bestSurvival != null) // if there was at least one
+			bestSurvivalPlayerString = bestSurvival.playerName;
+
+        text.setText("High Score:\nNormal Mode: " + bestPlayerString + "         Survival Mode: " + bestSurvivalPlayerString
+		+ "\n"
+		+ "\n"
+		+ "\nHint: for first time players pls click on \"Quide\".");
+
+        getChildren().add(startGameArea);
     }
+
+    private void setBestPlayers() {
+		String scoreBoard = Base.readUserScoreBoard();
+		String[] arrayPlayer = scoreBoard.split(System.lineSeparator());
+
+		String regexValidData = "Player: .+, Health: (-)?\\d+, Money: (-)?\\d+, Game mode: (Normal||Survival), Date: .+";
+
+		for (int i = 0; i < arrayPlayer.length; i++) {
+
+			if (false == arrayPlayer[i].matches(regexValidData)) { // if the first string is corrupt
+				if (arrayPlayer[i].matches("^$")) // and if it is emthy it should end met
+					return;
+				try {
+					throw new ExecptionFileNotFound();
+				} catch (ExecptionFileNotFound e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return;
+			}
+			String[] aP = arrayPlayer[i].split("(, Health).+"); // get the Name
+			String[] bP = aP[0].split("(Player: )");
+			String playerName = bP[1];
+
+			String[] aH = arrayPlayer[i].split(".+, Health: "); // get the Health
+			String[] bH = aH[1].split(", Money.+");
+			String playerHealth = bH[0];
+
+			String[] aM = arrayPlayer[i].split("((.+)Money: )"); // get the Money
+			String[] bM = aM[1].split(", Game.+");
+			String playerMoney = bM[0];
+
+			String[] aGm = arrayPlayer[i].split("Player.+Game mode: "); // get the GameMode
+			String[] bGm = aGm[1].split(", D.*");
+			String playerGameMode = bGm[0];
+
+			if (playerGameMode.equals("Survival"))
+				arrayListPlayerSurvival.add(new Player(playerName, Integer.parseInt(playerHealth), Integer.parseInt(playerMoney)));
+			else if (playerGameMode.equals("Normal"))
+				arrayListPlayerNormal.add(new Player(playerName, Integer.parseInt(playerHealth), Integer.parseInt(playerMoney)));
+		}
+	}
+
+	private Player getBestPlayer(ArrayList<Player> list) {
+		Player best = null;
+		if (list.size() == 1)
+			best = list.get(0);
+		for (int i = 0; i < list.size(); i++) {
+			best = list.get(0);
+			if (list.get(0).playerHealth < list.get(i).playerHealth) {
+				//if (list.get(0).playerHealth == list.get(i).playerHealth)
+				best = list.get(i);
+			}
+		}
+		return best;
+	}
 
     /** Opens a new Alert Pane with three different textes regarding the input parameter (1, 2, lose and 3 for win) */
     public void showEndPane(int endNr) {
 
         labelUserAdded = new Label("Score board updated");
+        labelUserAdded.setTextFill(Color.WHITE);
         Label endText = new Label();
+        endText.setTextFill(Color.WHITE);
         Label endTextTitle = new Label();
-        Label endTextScore = new Label("Your score: Base Health: " + Base.getBaseHealth() + ", Money: " + Base.getBaseMoney() + " on mode: " + Base.getBaseGameMode());
+        Label endTextScore = new Label("\nYour score: Health: " + Base.getBaseHealth() + ", Money: " + Base.getBaseMoney() + ", on mode: " + Base.getBaseGameMode());
+        endTextScore.setTextFill(Color.WHITE);
         endTextTitle.setAlignment(Pos.CENTER);
         endTextTitle.setTextFill(Color.RED);
         endTextTitle.setStyle("-fx-font-size: 30px;");
 
         textField.setMaxWidth(200);
 
-        // endGameArea.setBackground(value);
-
         addUserBox = new HBox(textField, addUserButton);
         addUserBox.setSpacing(20);
         addUserBox.setAlignment(Pos.CENTER);
 
-        endGameArea = new VBox(endTextTitle, endText, endTextScore, addUserBox, restartButton, quitButton);
+        endGameArea = new VBox(endTextTitle, endText, endTextScore, addUserBox, restartButton, backToMenuButton, quitButton);
         endGameArea.setSpacing(20); // space betweeen V/HBox elements
         endGameArea.setAlignment(Pos.CENTER);
         getChildren().remove(mainArea);
@@ -461,16 +612,12 @@ public class App extends VBox {
     private void pauseGame() {
         Label pauseText = new Label("Game paused");
         pauseText.setAlignment(Pos.CENTER);
-        pauseText.setTextFill(Color.BLACK);
+        pauseText.setTextFill(Color.WHITE);
         pauseText.setStyle("-fx-font-size: 30px;");
 
         // endGameArea.setBackground(value);
 
-        pauseBtnBox = new HBox(continueButton, restartButton, quideButton, quitButton);
-        pauseBtnBox.setSpacing(20);
-        pauseBtnBox.setAlignment(Pos.CENTER);
-
-        pauseGameArea = new VBox(pauseText, pauseBtnBox);
+        pauseGameArea = new VBox(pauseText, continueButton, restartButton, guideButton, backToMenuButton, quitButton);
         pauseGameArea.setSpacing(20);
         pauseGameArea.setAlignment(Pos.CENTER);
 
