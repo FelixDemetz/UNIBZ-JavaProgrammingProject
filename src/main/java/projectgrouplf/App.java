@@ -6,14 +6,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Optional;
 import java.util.Random;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -23,10 +16,9 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -38,18 +30,24 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import javafx.scene.control.ButtonType;
-
 public class App extends VBox {
     
-    public Label labelBaseHealth, labelBaseMoney, labelBuyDefenderInfo, labelStoreTitle;
+    public Label labelBaseHealth, labelBaseMoney, labelBuyDefenderInfo, labelStoreTitle, labelUserAdded;
 
-    private Button buySmallDefenderButton, buyNormalDefenderButton, buyBigDefenderButton, pausePlayButton;
+    private Button buySmallDefenderButton, buyNormalDefenderButton, buyBigDefenderButton, pausePlayButton, continueButton, quideButton;
+    private Button addUserButton, restartButton, quitButton;
     private HBox mainArea;
     private VBox leftArea;
     private VBox topLeftArea;
     private VBox storeArea;
     private Pane gamePane;
+
+    private VBox endGameArea;
+    private HBox addUserBox;
+    private VBox pauseGameArea;
+    private HBox pauseBtnBox;
+
+    private TextField textField =new TextField(""); 
                                                   
     private Rectangle startingPoint = new Rectangle(100, 0, 20, 450);
     private Rectangle endingPoint = new Rectangle(800, 0, 20, 450);
@@ -129,7 +127,47 @@ public class App extends VBox {
         pausePlayButton.setOnAction((ActionEvent event) -> {
             timeline.pause();
             pauseGame();
+        });
+        continueButton = new Button();
+        continueButton.setText("Resume");
+        continueButton.setOnAction((ActionEvent event) -> {
+            getChildren().remove(pauseGameArea);
+            getChildren().add(mainArea);
             timeline.play();
+        });
+        quideButton = new Button();
+        quideButton.setText("Guide");
+        quideButton.setOnAction((ActionEvent event) -> {
+            new HelpPane();
+        });
+
+         addUserButton = new Button();
+         addUserButton.setText("Add User");
+         addUserButton.setOnAction((ActionEvent event) -> {
+            if (false == textField.getText().isEmpty()) {
+                String userName = new String(textField.getText());
+                String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+                userDataString = new String("Player: " + userName + ", Health: " + Base.getBaseHealth()+ ", Money: " + Base.getBaseMoney()+ ", Game mode: " + Base.getBaseGameMode() + ", Date: " + date + ".");
+
+                addUsertoScoreBoard();
+
+                addUserBox.getChildren().add(labelUserAdded);
+                addUserBox.getChildren().remove(addUserButton);
+                addUserBox.getChildren().remove(textField);
+            }
+        });
+        restartButton = new Button();
+        restartButton.setText("Restart");
+        restartButton.setOnAction((ActionEvent event) -> {
+            resetGame();
+            getChildren().remove(endGameArea); // remove both bcs this btn is used in both
+            getChildren().remove(pauseGameArea);
+            getChildren().add(mainArea);
+        });
+        quitButton = new Button();
+        quitButton.setText("Quit");
+        quitButton.setOnAction((ActionEvent event) -> {
+            Platform.exit();
         });
 
         // THIS IS THE GAME
@@ -206,21 +244,21 @@ public class App extends VBox {
 
         timeline.stop();
                 
-            Base.survivalOrNormalBaseHealt();
-			Base.resetBaseMoney();
+        Base.survivalOrNormalBaseHealt();
+        Base.resetBaseMoney();
 
-            for (int i = 0; i < inGameEnemyArray.size(); i++) {
-                gamePane.getChildren().remove(inGameEnemyArray.get(i).enemyCircle);
-                inGameEnemyArray.get(i).deleteEnemyLabel();
-            }
-            inGameEnemyArray.clear();
-            removeDefender();
-            defenderArray.clear();
+        for (int i = 0; i < inGameEnemyArray.size(); i++) {
+            gamePane.getChildren().remove(inGameEnemyArray.get(i).enemyCircle);
+            inGameEnemyArray.get(i).deleteEnemyLabel();
+        }
+        inGameEnemyArray.clear();
+        removeDefender();
+        defenderArray.clear();
 
-            initialEnemyArray.clear();
-            newEnemyArray();
-            updateLabels();
-            timeline.play();
+        initialEnemyArray.clear();
+        newEnemyArray();
+        updateLabels();
+        timeline.play();
     }
     /** Needed if enemy has live 0 (= is dead) or has reached EndingPoint (=defenders Base).
      *  The circle, the health label and the enemy in the inGameArray is removed.
@@ -334,70 +372,64 @@ public class App extends VBox {
         }
     }
 
+    /** Checks if the game is finished and opens the EndPane() class */
+    private void showMissionInfo() {
+        if (Base.getBaseHealth() <= 0)
+            showEndPane(1);
+        if (Base.getBaseMoney() < 0)
+            showEndPane(2);
+        if (initialEnemyArray.size() == 0 && inGameEnemyArray.size() == 0 && Base.getBaseHealth() > 0) {
+            showEndPane(3);
+        }
+    }
+
     /** Opens a new Alert Pane with three different textes regarding the input parameter (1, 2, lose and 3 for win) */
     public void showEndPane(int endNr) {
 
-        JFrame f =new JFrame("Register");  
-        final JLabel l = new JLabel("Enter Username");
-        final JTextArea jTextArea = new JTextArea("Enter Username");
+        labelUserAdded = new Label("Score board updated");
+        Label endText = new Label();
+        Label endTextTitle = new Label();
+        Label endTextScore = new Label("Your score: Base Health: " + Base.getBaseHealth() + ", Money: " + Base.getBaseMoney() + " on mode: " + Base.getBaseGameMode());
+        endTextTitle.setAlignment(Pos.CENTER);
+        endTextTitle.setTextFill(Color.RED);
+        endTextTitle.setStyle("-fx-font-size: 30px;");
 
-        final JTextField tf=new JTextField("username");  
-        tf.setBounds(50,50, 150,20);  
-        JButton b = new JButton("OK");
+        textField.setMaxWidth(200);
 
-        b.addActionListener (e ->
-            {
-                if (false == tf.getText().isEmpty()) {
-                    String userName = new String(tf.getText());
-                    String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-                    userDataString = new String("Player: " + userName + ", Health: " + Base.getBaseHealth()+ ", Money: " + Base.getBaseMoney()+ ", Game mode: " + Base.getBaseGameMode() + ", Date: " + date + ".");
+        // endGameArea.setBackground(value);
 
-                    addUsertoScoreBoard();
-                }
-                f.setVisible(false);
-            });
-        b.setBounds(12,100,95,30);  
-        l.setBounds(12, 12, 150, 50);
-        tf.setBounds(12, 75, 150, 20);
-        f.add(l); f.add(b); f.add(tf);  
-        f.setSize(200,200);  
-        f.setResizable(false);
+        addUserBox = new HBox(textField, addUserButton);
+        addUserBox.setSpacing(20);
+        addUserBox.setAlignment(Pos.CENTER);
 
-        f.setAlwaysOnTop(true);
-        f.setAutoRequestFocus(true);
-
-        f.setLayout(null);
-
-        
-    	Alert dialog = new Alert(AlertType.INFORMATION);
-    	dialog.setTitle("Game Finished");
-        dialog.setGraphic(null);
-
-        ButtonType addUserButtonType = new ButtonType("Add User");
-		ButtonType restartButtonType = new ButtonType("Restart");
-		ButtonType quitButtonType = new ButtonType("Quit");
-
-		dialog.getButtonTypes().setAll(addUserButtonType, restartButtonType, quitButtonType);
+        endGameArea = new VBox(endTextTitle, endText, endTextScore, addUserBox, restartButton, quitButton);
+        endGameArea.setSpacing(20); // space betweeen V/HBox elements
+        endGameArea.setAlignment(Pos.CENTER);
+        getChildren().remove(mainArea);
+        getChildren().add(endGameArea);
 
         switch(endNr) {
             case 1: // no more Base Health
-                dialog.setHeaderText("You Lost!");
-                dialog.setContentText("Your Base was eradicated and those who still live would prefer dead over this hell"
+                endTextTitle.setText("You Lost!");
+                endTextTitle.setTextFill(Color.RED);
+                endText.setText("Your Base was eradicated and those who still live would prefer dead over this hell"
                     + "\n"
                     + "Enemys newspaper:"
                     + "\nMission: \"ethnic cleansing accomplished!\""
                     + "\n");
                 break;
             case 2: // no more Base Money
-                dialog.setHeaderText("You Lost!");
-                dialog.setContentText("Oh no, the War Industry prefers money over the flag"
+                endTextTitle.setText("You Lost!");
+                endTextTitle.setTextFill(Color.RED);
+                endText.setText("Oh no, the War Industry prefers money over the flag"
                     + "\n"
                     + "\nThe military corporations have switched the turntables and will now defend anothers freedom..."
                     + "\n");
                 break;
             case 3: // no more Enemies
-                dialog.setHeaderText("You Won?");
-                dialog.setContentText("No more Enemies, no more Reds, just Blue flags everywere, everybody is happy..."
+                endTextTitle.setText("You Won?");
+                endTextTitle.setTextFill(Color.GREEN);
+                endText.setText("No more Enemies, no more Reds, just Blue flags everywere, everybody is happy..."
                     + "\n"
                     + "\nAs the days passes on, you slowly start to doubt:"
                     + "\n"
@@ -409,22 +441,6 @@ public class App extends VBox {
                     + "\n");
                 break;
           }
-        Optional<ButtonType> result = dialog.showAndWait();
-        if (result.get() == addUserButtonType) {
-            // getChildren().removeAll(mainArea);
-            // getChildren().add(storeArea);
-            // this.setVisible(false);
-            f.setVisible(true);
-            showEndPane(endNr);
-            
-        }
-        if (result.get() == quitButtonType) {
-            Platform.exit();
-        }
-        if (result.get() == restartButtonType) {
-            dialog.close();
-            resetGame();
-        }
 	}
 
     /** Adds to the current Score Board text (.txt) file the current content and the new User with the Userdata */
@@ -443,28 +459,23 @@ public class App extends VBox {
      *
     **/
     private void pauseGame() {
-        Alert dialog = new Alert(AlertType.INFORMATION);
-    	dialog.setTitle("Pause");
-    	dialog.setHeaderText(null);
-		dialog.setGraphic(null);
-		
-		ButtonType continueButtonType = new ButtonType("Continue");
-		ButtonType restartButtonType = new ButtonType("Restart");
-		ButtonType quitButtonType = new ButtonType("Quit");
+        Label pauseText = new Label("Game paused");
+        pauseText.setAlignment(Pos.CENTER);
+        pauseText.setTextFill(Color.BLACK);
+        pauseText.setStyle("-fx-font-size: 30px;");
 
-		dialog.getButtonTypes().setAll(continueButtonType, restartButtonType, quitButtonType);
+        // endGameArea.setBackground(value);
 
-		Optional<ButtonType> result = dialog.showAndWait();
-		if (result.get() == continueButtonType) {
-			dialog.close();
-		}
-		if (result.get() == restartButtonType) {
-            dialog.close();
-            resetGame();
-        }
-        if (result.get() == quitButtonType) {
-            Platform.exit();
-        }
+        pauseBtnBox = new HBox(continueButton, restartButton, quideButton, quitButton);
+        pauseBtnBox.setSpacing(20);
+        pauseBtnBox.setAlignment(Pos.CENTER);
+
+        pauseGameArea = new VBox(pauseText, pauseBtnBox);
+        pauseGameArea.setSpacing(20);
+        pauseGameArea.setAlignment(Pos.CENTER);
+
+        getChildren().remove(mainArea);
+        getChildren().add(pauseGameArea);
     }
 
     /** Updates the Labels (the text Health, Money, the game description and the health of every Enemy) */

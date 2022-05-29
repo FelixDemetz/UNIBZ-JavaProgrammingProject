@@ -1,0 +1,21 @@
+Player: username, Health: 1, Money: 100, Game mode: Survival, Date: 29-05-2022.
+Player: username, Health: 1, Money: 100, Game mode: Survival, Date: 29-05-2022.
+Player: username, Health: 1, Money: 100, Game mode: Survival, Date: 29-05-2022.
+Player: username, Health: 1, Money: 100, Game mode: Survival, Date: 29-05-2022.
+Player: Hitler, Health: 1, Money: -30, Game mode: Survival, Date: 29-05-2022.
+Player: username, Health: 1, Money: -55, Game mode: Survival, Date: 29-05-2022.
+Player: Felix, Health: 10, Money: -30, Game mode: Normal, Date: 29-05-2022.
+Player: erg, Health: 1, Money: -30, Game mode: Survival, Date: 29-05-2022.
+Player: hitla, Health: 0, Money: 75, Game mode: Normal, Date: 29-05-2022.
+Player: Laurin, Health: 1, Money: -55, Game mode: Survival, Date: 29-05-2022.
+Player: hjbjbibj, Health: 1, Money: -55, Game mode: Survival, Date: 29-05-2022.
+Player: jkbi, Health: 1, Money: -30, Game mode: Survival, Date: 29-05-2022.
+Player: wrthtat, Health: 10, Money: -55, Game mode: Normal, Date: 29-05-2022.
+Player: hjbbjjh, Health: 1, Money: -5, Game mode: Survival, Date: 29-05-2022.
+Player: hjhbj, Health: 1, Money: -30, Game mode: Survival, Date: 29-05-2022.
+Player: nn, Health: 1, Money: -5, Game mode: Survival, Date: 29-05-2022.
+Player: rgrt, Health: 1, Money: -30, Game mode: Survival, Date: 29-05-2022.
+Player: gey, Health: 1, Money: -5, Game mode: Survival, Date: 29-05-2022.
+Player: gey, Health: 1, Money: -80, Game mode: Survival, Date: 29-05-2022.
+Player: kk, Health: 1, Money: -30, Game mode: Survival, Date: 29-05-2022.
+Player: Laurin l leff, Health: 1, Money: 205, Game mode: Normal, Date: 29-05-2022.

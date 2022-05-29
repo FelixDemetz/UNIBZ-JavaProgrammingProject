@@ -11,7 +11,7 @@ public class HelpPane {
 	HelpPane() {
     	Alert dialog = new Alert(AlertType.INFORMATION);
     	dialog.setTitle("Game Guide");
-    	dialog.setHeaderText("Quide");
+    	dialog.setHeaderText("Guide");
 		dialog.setGraphic(null);
 
 		ButtonType backButtonType = new ButtonType("OK");

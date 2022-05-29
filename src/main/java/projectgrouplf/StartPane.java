@@ -50,7 +50,6 @@ public class StartPane {
 		Optional<ButtonType> result = dialog.showAndWait();
 		if (result.get() == playButtonType) {
 			dialog.close();
-			new MissionInfoPane();
 		}
 		if (result.get() == playSurvivalButtonType) {
 			//dialog.close();
