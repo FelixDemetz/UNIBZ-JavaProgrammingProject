@@ -65,7 +65,7 @@ List and explain how you used the 10 programming techniques required for this pr
 - **Technique 10**: We used test hooks in testing.
 - **Technique 11**: We used the graphical interface JavaFX so that the user can more easely interact with the game.
 
-### 4.4. Tests
+### 4.4. TODO Tests
 
 Briefly describe and motivate your test suite.
 
@@ -91,7 +91,7 @@ We never clearely divided responsabilities, we developed the game together, writ
 
 A big challenge (for both of us) was to design the entire project, where to put a method, which classes we need, ecc. At the end we decided to have an App class (most important one) and a Base class that saves Health, Money, GameMode and so on.
 
-### 5.4. Learning Outcomes
+### TODO 5.4. Learning Outcomes
 
 Describe what you learned with this project.
 
