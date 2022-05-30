@@ -1,5 +1,3 @@
-# List here the files & directories you want git to ignore for more info: https://git-scm.com/docs/gitignore
-
 # The file that is created by our IDE
 *.vscode
 
@@ -7,7 +5,7 @@
 *.idea
 
 # Compiled classes
-target*
+target
 
-# Non human readable file
-*.DS_Store
+# Non human readable file 
+.DS_Store
