@@ -1,5 +1,3 @@
-# List here the files & directories you want git to ignore for more info: https://git-scm.com/docs/gitignore
-
 # The file that is created by our IDE
 *.vscode
 
@@ -13,3 +11,4 @@ target*
 .DS_Store
 
 target
+*.target
