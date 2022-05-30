@@ -1,13 +1,10 @@
 # List here the files & directories you want git to ignore
 
 # The file that is created by our IDE
-.vscode
+*.vscode
 
 # The file that is created by our IDE (for maven...)
-.idea
+*.idea
 
 # Compiled classes
-target
-
-# Compiled classes
-target
+*target
