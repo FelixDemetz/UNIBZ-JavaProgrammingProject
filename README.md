@@ -1,6 +1,6 @@
 # Blood for Freedom
 
-Tower defence "Blood for Freedom" by Felix and Lucas.
+Tower defence "Blood for Freedom" by Felix Demetz and Lucas Glück.
 
 This **README** contains the cmds how to run the current game source code with maven.
 
