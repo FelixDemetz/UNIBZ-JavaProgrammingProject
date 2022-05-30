@@ -8,3 +8,6 @@
 
 # Compiled classes
 *target
+
+# Non human readable file
+*.DS_Store
