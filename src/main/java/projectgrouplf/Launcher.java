@@ -11,6 +11,7 @@ public class Launcher extends Application {
     public void start(Stage primaryStage) {
         Scene scene = new Scene(new App(), 1025, 450);
         primaryStage.setTitle("Blood for Freedom");
+        primaryStage.setResizable(false); // should not change window size
         primaryStage.setScene(scene);
         primaryStage.show();
     }

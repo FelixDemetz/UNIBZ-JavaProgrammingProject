@@ -36,7 +36,7 @@ import javafx.util.Duration;
 
 public class App extends VBox {
     
-    public Label labelBaseHealth, labelBaseMoney, labelBuyDefenderInfo, labelStoreTitle, labelUserAdded;
+    public Label labelBaseHealth, labelBaseMoney, labelBuyDefenderInfo, labelStoreTitle, labelUserAdded, enterUsername;
 
     private Button buySmallDefenderButton, buyNormalDefenderButton, buyBigDefenderButton, pausePlayButton, continueButton, guideButton, playNormalButton, playSurvivalButton, scoreBoardButton, backToMenuButton;
     private Button addUserButton, restartButton, quitButton;
@@ -210,6 +210,7 @@ public class App extends VBox {
                 addUserBox.getChildren().add(labelUserAdded);
                 addUserBox.getChildren().remove(addUserButton);
                 addUserBox.getChildren().remove(textField);
+                addUserBox.getChildren().remove(enterUsername);
             }
         });
         restartButton = new Button();
@@ -540,6 +541,8 @@ public class App extends VBox {
         labelUserAdded.setTextFill(Color.WHITE);
         Label endText = new Label();
         endText.setTextFill(Color.WHITE);
+        enterUsername = new Label("Enter username: ");
+        enterUsername.setTextFill(Color.WHITE);
         Label endTextTitle = new Label();
         Label endTextScore = new Label("\nYour score: Health: " + Base.getBaseHealth() + ", Money: " + Base.getBaseMoney() + ", on mode: " + Base.getBaseGameMode());
         endTextScore.setTextFill(Color.WHITE);
@@ -549,11 +552,11 @@ public class App extends VBox {
 
         textField.setMaxWidth(200);
 
-        addUserBox = new HBox(textField, addUserButton);
+        addUserBox = new HBox(enterUsername, textField, addUserButton);
         addUserBox.setSpacing(20);
         addUserBox.setAlignment(Pos.CENTER);
 
-        endGameArea = new VBox(endTextTitle, endText, endTextScore, addUserBox, restartButton, backToMenuButton, quitButton);
+        endGameArea = new VBox(endTextTitle, endText, endTextScore, addUserBox, restartButton, backToMenuButton);
         endGameArea.setSpacing(20); // space betweeen V/HBox elements
         endGameArea.setAlignment(Pos.CENTER);
         getChildren().remove(mainArea);
@@ -561,31 +564,31 @@ public class App extends VBox {
 
         switch(endNr) {
             case 1: // no more Base Health
-                endTextTitle.setText("You Lost!");
+                endTextTitle.setText("Total elimination");
                 endTextTitle.setTextFill(Color.RED);
-                endText.setText("Your Base was eradicated and those who still live would prefer dead over this hell"
+                endText.setText("Your Base was eradicated and those who still live would prefer dead over this hell."
                     + "\n"
-                    + "Enemys newspaper:"
+                    + "\nEnemys newspaper:"
                     + "\nMission: \"ethnic cleansing accomplished!\""
                     + "\n");
                 break;
             case 2: // no more Base Money
-                endTextTitle.setText("You Lost!");
+                endTextTitle.setText("Red guns");
                 endTextTitle.setTextFill(Color.RED);
-                endText.setText("Oh no, the War Industry prefers money over the flag"
+                endText.setText("Oh no, the War Industry prefers money over the flag."
                     + "\n"
+                    + "\nThe guns got a new Red paint, as you got out of money."
                     + "\nThe military corporations have switched the turntables and will now defend anothers freedom..."
                     + "\n");
                 break;
             case 3: // no more Enemies
-                endTextTitle.setText("You Won?");
+                endTextTitle.setText("Liberty?");
                 endTextTitle.setTextFill(Color.GREEN);
                 endText.setText("No more Enemies, no more Reds, just Blue flags everywere, everybody is happy..."
                     + "\n"
                     + "\nAs the days passes on, you slowly start to doubt:"
                     + "\n"
-                    + "\nwho was the Defender and who the Enemy,"
-                    + "\nwho was the invador and who the victim,"
+                    + "\nwho was the Defender and who the Enemy, who was the invador and who the victim,"
                     + "\nwho is the good and who is the bad one."
                     + "\n"
                     + "\nbut \"the winner is always right\", or isn't it..."
@@ -617,7 +620,7 @@ public class App extends VBox {
 
         // endGameArea.setBackground(value);
 
-        pauseGameArea = new VBox(pauseText, continueButton, restartButton, guideButton, backToMenuButton, quitButton);
+        pauseGameArea = new VBox(pauseText, continueButton, restartButton, guideButton, backToMenuButton);
         pauseGameArea.setSpacing(20);
         pauseGameArea.setAlignment(Pos.CENTER);
 
