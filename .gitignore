@@ -5,7 +5,7 @@
 *.idea
 
 # Compiled classes
-target*
+target
 
 # Non human readable file 
 .DS_Store
