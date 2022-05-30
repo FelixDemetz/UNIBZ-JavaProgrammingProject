@@ -7,8 +7,5 @@
 # Compiled classes
 target*
 
-# Non human readable file
+# Non human readable file 
 .DS_Store
-
-target
-*.target
