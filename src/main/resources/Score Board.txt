@@ -1,0 +1,2 @@
+Player: Cornulio, Health: 6, Money: 275, Game mode: Normal, Date: 30-05-2022.
+Player: testuser, Health: 1, Money: -30, Game mode: Survival, Date: 30-05-2022.

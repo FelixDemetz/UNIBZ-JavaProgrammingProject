@@ -1,1 +1,13 @@
-# List here the files & directories you want git to ignore
+# List here the files & directories you want git to ignore for more info: https://git-scm.com/docs/gitignore
+
+# The file that is created by our IDE
+*.vscode
+
+# The file that is created by our IDE (for maven...)
+*.idea
+
+# Compiled classes
+target*
+
+# Non human readable file
+*.DS_Store
