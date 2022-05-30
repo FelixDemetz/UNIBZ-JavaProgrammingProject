@@ -527,7 +527,6 @@ public class App extends VBox {
 		for (int i = 0; i < list.size(); i++) {
 			best = list.get(0);
 			if (list.get(0).playerHealth < list.get(i).playerHealth) {
-				//if (list.get(0).playerHealth == list.get(i).playerHealth)
 				best = list.get(i);
 			}
 		}
@@ -557,6 +556,9 @@ public class App extends VBox {
         addUserBox.setAlignment(Pos.CENTER);
 
         endGameArea = new VBox(endTextTitle, endText, endTextScore, addUserBox, restartButton, backToMenuButton);
+        if (endNr != 3)
+            endGameArea.getChildren().remove(addUserBox);
+
         endGameArea.setSpacing(20); // space betweeen V/HBox elements
         endGameArea.setAlignment(Pos.CENTER);
         getChildren().remove(mainArea);

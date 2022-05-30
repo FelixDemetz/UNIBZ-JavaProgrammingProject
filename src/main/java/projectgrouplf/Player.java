@@ -12,9 +12,4 @@ public class Player {
         this.playerHealth = playerHealth;
         this.playerMoney = playerMoney;
     }
-
-    // public String toString() {
-    //     return playerName + ": Health: " + playerHealth + ", Money: " + playerMoney + ".";
-    // }
-
 }

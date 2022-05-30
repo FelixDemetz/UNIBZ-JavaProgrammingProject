@@ -7,5 +7,8 @@
 # Compiled classes
 target
 
-# Non human readable file 
+# macOS (Non human readable file) 
 .DS_Store
+
+# Log file
+*.log

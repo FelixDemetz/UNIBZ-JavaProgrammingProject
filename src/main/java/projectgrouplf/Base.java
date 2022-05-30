@@ -50,7 +50,7 @@ public class Base { // should it be static?
 
     /** Scanns the file containing the current Score Board (it is written in the Base class so that every other class can use the met it easely) */
     public static String readUserScoreBoard() {
-        String s = "error";
+        String s = "readUserScoreBoardFailed";
         try (BufferedReader br = new BufferedReader(new FileReader(scoreBoardRelativePath))) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();

@@ -14,11 +14,12 @@ public class Enemy {
     private int enemyHealth = 10;
     private int enemyMoney = 15;
 
+    /** enemyRank is 1, 2 or 3, the site, health, money and damage increases */
     public Enemy(Coordinate enemyCoordinate, int enemyRank) {
         this.enemyCoordinate = enemyCoordinate;
         this.enemyCircle = new Circle(enemyCoordinate.getCoordinateX(), enemyCoordinate.getCoordinateY(), 25);
         this.enemyCircle.setFill(Color.RED); // should allways be a commie :)
-        this.enemyHealthLabel = new Label();
+        this.enemyHealthLabel = new Label("");
         this.enemyHealthLabel.setTextFill(Color.YELLOW);
         this.enemyHealthLabel.setLayoutX(enemyCoordinate.getCoordinateX() - this.enemyHealthLabel.getWidth());
         this.enemyHealthLabel.setLayoutY(enemyCoordinate.getCoordinateY() - this.enemyHealthLabel.getHeight());
@@ -26,7 +27,7 @@ public class Enemy {
     }
     
 
-    /** This is the most important met for the enemy it defines the rank (damage, health, money and size) **/
+    /** This is the most important met for the Enemy it defines the rank (damage, health, money and size) **/
     private Enemy setEnemyRank(int enemyRank) {
         if (enemyRank == 1) {
             this.setEnemyDamage(1);
