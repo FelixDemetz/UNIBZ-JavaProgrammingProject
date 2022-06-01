@@ -62,8 +62,8 @@ List and explain how you used the 10 programming techniques required for this pr
 - **Technique 7**: We used Optionals in every Alert dialog pane, to use ButtonTypes.
 - **Technique 8**: We used I/O when reading or writing on our Scoreboard.txt.
 - **Technique 9**: We used regular expressions to filter certain parts of the scoreboard and then set up the best player.
-- **Technique 10**: We used test hooks in testing.
-- **Technique 11**: We used the graphical interface JavaFX so that the user can more easely interact with the game.
+- **Technique 10**: We used the graphical interface JavaFX so that the user can more easely interact with the game.
+<!-- - **Technique 11**: We used test hooks in testing. -->
 
 ### 4.4. TODO Tests
 

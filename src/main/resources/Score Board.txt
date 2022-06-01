@@ -1,1 +1,0 @@
-Player: Trumpelton, Health: 6, Money: 430, Game mode: Normal, Date: 31-05-2022.

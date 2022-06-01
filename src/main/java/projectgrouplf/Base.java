@@ -11,7 +11,7 @@ public class Base { // should it be static?
     private static int baseMoney = 100; // should be 100
     private static int initialBaseMoney = baseMoney;
     /** it is written in the Base class so that every other class can use the variable it easely */
-    public static String scoreBoardRelativePath = "src/main/resources/Score Board.txt";
+    public static String scoreBoardRelativePath = "src/main/resources/Scoreboard.txt";
 
     public Base() {
     }
