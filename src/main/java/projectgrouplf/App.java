@@ -19,7 +19,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
@@ -32,103 +31,99 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 public class App extends VBox {
     
-    public Label labelBaseHealth, labelBaseMoney, labelBuyDefenderInfo, labelStoreTitle, labelUserAdded, enterUsername;
+    /** Left nearly everything i wantet to test public / default */
+     Text labelBaseHealth, labelBaseMoney, labelBuyDefenderInfo, labelStoreTitle, labelUserAdded, enterUsername;
+     Button buySmallDefenderButton, buyNormalDefenderButton, buyBigDefenderButton, pausePlayButton, continueButton, guideButton, playNormalButton, playSurvivalButton, scoreBoardButton, backToMenuButton;
+     Button addUserButton, restartButton, quitButton;
+    
+     HBox mainArea;
+     VBox leftArea;
+     VBox topLeftArea;
+     VBox storeArea;
+     Pane gamePane;
 
-    private Button buySmallDefenderButton, buyNormalDefenderButton, buyBigDefenderButton, pausePlayButton, continueButton, guideButton, playNormalButton, playSurvivalButton, scoreBoardButton, backToMenuButton;
-    private Button addUserButton, restartButton, quitButton;
-    private HBox mainArea;
-    private VBox leftArea;
-    private VBox topLeftArea;
-    private VBox storeArea;
-    private Pane gamePane;
+     VBox endGameArea;
+     HBox addUserBox;
+     VBox pauseGameArea;
+     VBox startGameArea;
 
-    private VBox endGameArea;
-    private HBox addUserBox;
-    private VBox pauseGameArea;
-    private VBox startGameArea;
-
-    private TextField textField =new TextField(""); 
+     TextField textField; 
                                                   
-    private Rectangle startingPoint = new Rectangle(100, 0, 20, 450);
-    private Rectangle endingPoint = new Rectangle(800, 0, 20, 450);
-    private Coordinate startingCordindateEnemy = new Coordinate(startingPoint.getX(), startingPoint.getY()+startingPoint.getHeight()/2);
+     Rectangle startingPoint = new Rectangle(100, 0, 20, 450);
+     Rectangle endingPoint = new Rectangle(800, 0, 20, 450);
 
-    private ArrayList<Defender> defenderArray = new ArrayList<Defender>();
-    private ArrayList<Enemy> initialEnemyArray = new ArrayList<Enemy>();
-    private ArrayList<Enemy> inGameEnemyArray = new ArrayList<Enemy>();
+     int numberOfEnemies = 10;
+     int numberOfEnemyRanks = 3;
+     ArrayList<Defender> defenderArray = new ArrayList<Defender>();
+     ArrayList<Enemy> initialEnemyArray = new ArrayList<Enemy>();
+     ArrayList<Enemy> inGameEnemyArray = new ArrayList<Enemy>();
 
-    private int numberOfEnemiesInArray = 10;
     /** The rank that an Defender has when clicking the "add Defender" btn */
-    private int defenderRank;
-
+     int defenderRank;
     /** Every x times a new Enemy is displayed in the gamePane and gets attacked by the Defender */
-    boolean buyButtonClicked = false;
-    /** Boolean for Start and Pause btn */
-    boolean gameRun = true;
+     boolean buyButtonClicked = false;
 
     /** Adds an Enemy to the gamePane / gets a hit by a Defender every X times */
-    private int enemyReleaser;
-    private Timeline timeline;
+     int enemyReleaser;
+     Timeline timeline;
 
     /** For the endPane, the userData */
-    private String userDataString;
-    private File scoreBoard = new File(Base.scoreBoardRelativePath);
-    ArrayList<Player> arrayListPlayerNormal = new ArrayList<>();
-	ArrayList<Player> arrayListPlayerSurvival = new ArrayList<>(); 
+     String userDataString;
+     File scoreBoard = new File(Base.scoreBoardRelativePath);
+     ArrayList<Player> arrayListPlayerNormal = new ArrayList<>();
+	 ArrayList<Player> arrayListPlayerSurvival = new ArrayList<>(); 
 
     public App() {
 
-        // all the enemies
-        newEnemyArray();
-
         // all the labels
-        labelBaseHealth = new Label("Health: " + Base.getBaseHealth());
-        labelBaseMoney = new Label("$ " + Base.getBaseMoney());
-        labelBuyDefenderInfo = new Label("To buy defence,"
+        labelBaseHealth = new Text("Health: " + Base.getBaseHealth());
+        labelBaseMoney = new Text("$ " + Base.getBaseMoney());
+        labelBuyDefenderInfo = new Text("To buy defence,"
         + "\npress a button"
         + "\nin the green bx"
         + "\nthen, click on the"
         + "\nbattlefield to place"
         + "\nthe unit.");
-        labelStoreTitle = new Label("War Industry");
-        labelStoreTitle.setTextFill(Color.BISQUE);
-        labelStoreTitle.setAlignment(Pos.CENTER);
+        labelStoreTitle = new Text("War Industry");
+        labelStoreTitle.setFill(Color.BISQUE);
+        labelStoreTitle.setTextAlignment(TextAlignment.CENTER);
         labelStoreTitle.setStyle("-fx-font-size: 20px;");
 
-        labelBaseHealth.setTextFill(Color.rgb(210, 20, 20));
+        labelBaseHealth.setFill(Color.rgb(210, 20, 20));
         labelBaseHealth.setStyle("-fx-font-size: 15px;");
 
-        labelBaseMoney.setTextFill(Color.GOLD);
+        labelBaseMoney.setFill(Color.GOLD);
         labelBaseMoney.setStyle("-fx-font-size: 15px;");
 
-        labelBuyDefenderInfo.setTextFill(Color.WHITE);
+        labelBuyDefenderInfo.setFill(Color.WHITE);
         
         // buttons
-        buySmallDefenderButton = new Button("Lil Uzi 25$");
+        buySmallDefenderButton = new Button("lil Uzi 25$");
         buySmallDefenderButton.setPrefWidth(100);
         buySmallDefenderButton.setOnAction((ActionEvent event) -> {
             buyButtonClicked = true;
             defenderRank = 1;
-            // here show the radius of the defender
-            setOnMouseClicked(this::getMouseCoordinateClick);
+            setOnMouseClicked(this::addDefenderOnMouseCordinatePosition);
         });
         buyNormalDefenderButton = new Button("Agent O. 50$");
         buyNormalDefenderButton.setPrefWidth(100);
         buyNormalDefenderButton.setOnAction((ActionEvent event) -> {
             buyButtonClicked = true;
             defenderRank = 2;
-            setOnMouseClicked(this::getMouseCoordinateClick);
+            setOnMouseClicked(this::addDefenderOnMouseCordinatePosition);
         });
         buyBigDefenderButton = new Button("Big Berta 80$");
         buyBigDefenderButton.setPrefWidth(100);
         buyBigDefenderButton.setOnAction((ActionEvent event) -> {
             buyButtonClicked = true;
             defenderRank = 3;
-            setOnMouseClicked(this::getMouseCoordinateClick);
+            setOnMouseClicked(this::addDefenderOnMouseCordinatePosition);
         });
 
         playNormalButton = new Button();
@@ -178,7 +173,6 @@ public class App extends VBox {
         pausePlayButton.setText("Pause");
         pausePlayButton.setPrefWidth(100);
         pausePlayButton.setOnAction((ActionEvent event) -> {
-            timeline.pause();
             pauseGame();
         });
         continueButton = new Button();
@@ -239,37 +233,6 @@ public class App extends VBox {
             Platform.exit();
         });
 
-        // THIS IS THE GAME
-        showStartPane();
-
-        timeline = new Timeline(new KeyFrame(Duration.seconds(0.025), ev -> { // normal speed: 0.025?
-            int i = 0;
-            while (i < inGameEnemyArray.size()) {
-                checkIfEnemyReachedBase(inGameEnemyArray.get(i));
-                if (enemyReleaser % 32 == 0) // how often Defence damages Enemy 
-                    checkIfEnemyInDefenderRadius(inGameEnemyArray.get(i));
-                if (inGameEnemyArray.size() == i) {
-                    break;
-                }
-                inGameEnemyArray.get(i).enemyMovesForward(2.5, endingPoint);
-                i++;
-            }
-            if (enemyReleaser % 32 == 0) // here should wait
-                addEnemyToGameArea();
-            updateLabels();
-            enemyReleaser++;
-            // boolean gameFinished = (Base.getBaseMoney() < 0 || (initialEnemyArray.size() == 0 && inGameEnemyArray.size() == 0 && Base.getBaseHealth() > 0 && Base.getBaseMoney() >= 0));
-            if (Base.getBaseHealth() <= 0 || Base.getBaseMoney() < 0 || (initialEnemyArray.size() == 0 && inGameEnemyArray.size() == 0 && Base.getBaseHealth() > 0)) { // ends game
-                timeline.pause();
-                Platform.runLater(()-> { // this is needed, so the met in EndPane "showAndWait()" does not throw Exception in thread "JavaFX Application Thread" java.lang.IllegalStateException: showAndWait is not allowed during animation or layout processing
-                    choosesEndPane();
-                });
-            }
-        }));
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.pause();
-
-
         // the buttonsArea
         topLeftArea = new VBox(labelBaseHealth, labelBaseMoney, pausePlayButton);
         topLeftArea.setPrefSize(125, 125);
@@ -294,70 +257,61 @@ public class App extends VBox {
 
         leftArea = new VBox(topLeftArea, storeArea);
         mainArea = new HBox(leftArea, gamePane);
-
         setSpacing(20);
         setAlignment(Pos.CENTER);
+
+
+        // THIS IS THE GAME
+
+        showStartPane();
+        // add all the enemies to initialEnemyArray
+        newEnemyArray(numberOfEnemies);
+
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.025), ev -> { // normal speed: 0.025?
+            int i = 0;
+            while (i < inGameEnemyArray.size()) {
+                if (inGameEnemyArray.get(i).checkIfEnemyReachedBase(endingPoint))
+                    removeEnemy(inGameEnemyArray.get(i));
+                if (enemyReleaser % 32 == 0) // how often Defence damages Enemy 
+                    checkIfEnemyInDefenderRadius(inGameEnemyArray.get(i));
+                if (inGameEnemyArray.size() == i) {
+                    break;
+                }
+                inGameEnemyArray.get(i).enemyMovesForward(new Coordinate(2.5, 0), endingPoint);
+                i++;
+            }
+            if (enemyReleaser % 32 == 0) // here should wait
+                addEnemyToGameArea();
+            updateTexts();
+            enemyReleaser++;
+            boolean gameIsFinished = (Base.getBaseHealth() <= 0 || Base.getBaseMoney() < 0 || (initialEnemyArray.size() == 0 && inGameEnemyArray.size() == 0 && Base.getBaseHealth() > 0));
+            if (gameIsFinished) { // ends game
+                timeline.pause();
+                showEndPane();
+            }
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.pause();
     }
 
 
-    /** Resetes the game. Stops the timeline, resets the Base data (health and money), clears the arrays containing
-     *  Enemies and Defenders, removes the elements from the gamePane.
-     *
-    **/
-    public void resetGame() {
-        pausePlayButton.setText("Pause");
-        gameRun = true;
-
-        timeline.stop();
-                
-        Base.survivalOrNormalBaseHealt();
-        Base.resetBaseMoney();
-
-        for (int i = 0; i < inGameEnemyArray.size(); i++) {
-            gamePane.getChildren().remove(inGameEnemyArray.get(i).enemyCircle);
-            inGameEnemyArray.get(i).deleteEnemyLabel();
-        }
-        inGameEnemyArray.clear();
-        removeDefender();
-        defenderArray.clear();
-
-        initialEnemyArray.clear();
-        newEnemyArray();
-        updateLabels();
-        timeline.play();
-    }
     /** Needed if enemy has live 0 (= is dead) or has reached EndingPoint (=defenders Base).
      *  The circle, the health label and the enemy in the inGameArray is removed.
      * @param enemy
     **/
-    private void removeEnemy(Enemy enemy) {
+    public void removeEnemy(Enemy enemy) {
         gamePane.getChildren().remove(enemy.enemyCircle);
-        enemy.deleteEnemyLabel();
+        enemy.deleteEnemyText();
         inGameEnemyArray.remove(enemy);
     }
 
-    /** Removes every Defenders recktangle and attackCircle from the gamePane */
-    private void removeDefender() {
-        if (defenderArray.size() != 0) {
+    /** Removes every Defenders rectangle and attackCircle from the gamePane */
+    public void removeEveryDefender() {
+        if (defenderArray.size() > 0) {
             for (int i = 0; i < defenderArray.size(); i++) {
                 gamePane.getChildren().remove(defenderArray.get(i).defenderRectangle);
                 gamePane.getChildren().remove(defenderArray.get(i).defenderAttackCircle);
             }
-        }
-    }
-
-    /** Adds to an array the number of enemies */
-    private void newEnemyArray() {
-        initialEnemyArray.clear();
-        for (int i = 0; i < numberOfEnemiesInArray; i++) {
-            initialEnemyArray.add(new Enemy(startingCordindateEnemy, randomEnemyRank()));
-        } 
-    }
-
-    private void checkIfEnemyReachedBase(Enemy enemy) {
-        if (enemy.getEnemyCoordinate().getCoordinateX() > endingPoint.getX()) { // for every Enemy that is after the finish get damage, remove
-            Base.setBaseHealth(Base.getBaseHealth() - enemy.getEnemyDamage());
-            removeEnemy(enemy);
         }
     }
 
@@ -366,7 +320,7 @@ public class App extends VBox {
      *  If that is the case, the health of the enemy is decreased once and if no more health, increase Base money and the met "removeEnemy()" is invoced.
      * @param enemy
     **/
-    private void checkIfEnemyInDefenderRadius(Enemy enemy) { // here i created just the loop for the defenders
+    public void checkIfEnemyInDefenderRadius(Enemy enemy) { // here i created just the loop for the defenders
         Point2D enemyNordPoint = new Point2D(enemy.enemyCircle.getCenterX(), enemy.enemyCircle.getCenterY() + enemy.enemyCircle.getRadius()); 
         Point2D enemySudPoint = new Point2D(enemy.enemyCircle.getCenterX(), enemy.enemyCircle.getCenterY() - enemy.enemyCircle.getRadius()); 
         Point2D enemyWestPoint = new Point2D(enemy.enemyCircle.getCenterX() - enemy.enemyCircle.getRadius(), enemy.enemyCircle.getCenterY()); 
@@ -386,24 +340,24 @@ public class App extends VBox {
         }
     }
 
-    /** Adds the Defenders recktangle and attackCircle to the gamePane */
-    private void addDefenderToGameArea() {
+    /** Adds the Defenders rectangle and attackCircle to the gamePane */
+    public void addDefenderToGameArea() {
         gamePane.getChildren().addAll(defenderArray.get(defenderArray.size()-1).defenderRectangle);
         gamePane.getChildren().addAll(defenderArray.get(defenderArray.size()-1).defenderAttackCircle);
     }
 
-    /** Adds the Enemies circle and Label to the Pane, adds them to the inGameArray and removes them form the initialArray **/
-    private void addEnemyToGameArea() {
+    /** Adds the Enemies circle and Text to the Pane, adds them to the inGameArray and removes them form the initialArray **/
+    public void addEnemyToGameArea() {
         if (initialEnemyArray.size() != 0) {
             gamePane.getChildren().addAll(initialEnemyArray.get(0).enemyCircle);
-            gamePane.getChildren().addAll(initialEnemyArray.get(0).enemyHealthLabel);
+            gamePane.getChildren().addAll(initialEnemyArray.get(0).enemyHealthText);
             inGameEnemyArray.add(initialEnemyArray.get(0));
             initialEnemyArray.remove(0);
         }
     }
 
     /** Converts the mouseposition click into a coordinate and places there a new Defender */
-    private void getMouseCoordinateClick(MouseEvent event) {
+    public void addDefenderOnMouseCordinatePosition(MouseEvent event) {
         if (buyButtonClicked) {
             Coordinate c = new Coordinate(event.getX()-125, event.getY()); // -125 bcs there is the "leftArea"
             if (gamePane.contains(c.getCoordinateX(), c.getCoordinateY())) {
@@ -420,40 +374,39 @@ public class App extends VBox {
                     Base.setBaseMoney(Base.getBaseMoney() - 80);
                 }
                 addDefenderToGameArea();
-                updateLabels();
+                updateTexts();
             }
             buyButtonClicked = false;
         }
         return;
     }
 
-    /** Checks if the game is finished and opens the EndPane() class */
-    private void choosesEndPane() {
-        if (Base.getBaseHealth() <= 0)
-            showEndPane(1);
-        if (Base.getBaseMoney() < 0)
-            showEndPane(2);
-        if (initialEnemyArray.size() == 0 && inGameEnemyArray.size() == 0 && Base.getBaseHealth() > 0) {
-            showEndPane(3);
-        }
+    /** Adds to an array the number of enemies */
+    public void newEnemyArray(int numberOfEnemiesInArray) {
+        initialEnemyArray.clear();
+        for (int i = 0; i < numberOfEnemiesInArray; i++) {
+            Coordinate c = new Coordinate(startingPoint.getX(), startingPoint.getY()+startingPoint.getHeight()/2);
+            int enemyRank = new Random().nextInt(numberOfEnemyRanks)+1;
+            initialEnemyArray.add(new Enemy(c, enemyRank));
+        } 
     }
 
     /**  */
-    private void showStartPane() {
-        Label title = new Label("Blood for Freedom");
-        Label textMadaByUs = new Label("              Tower Defense game by Felix Demetz und Lucas Glück v1.2");
-        title.setAlignment(Pos.CENTER);
-        title.setTextFill(Color.rgb(255, 30, 70));
+    public void showStartPane() {
+        Text title = new Text("Blood for Freedom");
+        Text textMadaByUs = new Text("              Tower Defense game by Felix Demetz und Lucas Glück v1.2");
+        title.setTextAlignment(TextAlignment.CENTER);
+        title.setFill(Color.rgb(255, 30, 70));
         title.setStyle("-fx-font-size: 30px;");
-        textMadaByUs.setAlignment(Pos.BOTTOM_LEFT);
-        textMadaByUs.setTextFill(Color.WHITE);
+        textMadaByUs.setTextAlignment(TextAlignment.LEFT);
+        textMadaByUs.setFill(Color.WHITE);
 
         String bestPlayerString = "* No Player *";
 		String bestSurvivalPlayerString = "* No Player *";
 
-        Label text = new Label();
-        text.setAlignment(Pos.CENTER);
-        text.setTextFill(Color.WHITE);
+        Text text = new Text();
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setFill(Color.WHITE);
 
         VBox mainBox = new VBox(title, text, playNormalButton, playSurvivalButton, guideButton, scoreBoardButton, quitButton);
         mainBox.setAlignment(Pos.CENTER);
@@ -470,7 +423,7 @@ public class App extends VBox {
 		if (bestSurvival != null) // if there was at least one
 			bestSurvivalPlayerString = bestSurvival.playerName;
 
-        text.setText("High Score:\nNormal Mode: " + bestPlayerString + "         Survival Mode: " + bestSurvivalPlayerString
+        text.setText("High Score:\n\nNormal Mode: " + bestPlayerString + "         Survival Mode: " + bestSurvivalPlayerString
 		+ "\n"
 		+ "\n"
 		+ "\nHint: for first time players pls click on \"Quide\".");
@@ -478,7 +431,125 @@ public class App extends VBox {
         getChildren().add(startGameArea);
     }
 
-    private void setBestPlayers() {
+    /** changes the Pane showing one of tree possible finishes */
+    public void showEndPane() {
+        int endNr = 0;
+        if (Base.getBaseHealth() <= 0)
+            endNr = 1; // lose
+        if (Base.getBaseMoney() < 0)
+            endNr = 2; // lose
+        if (initialEnemyArray.size() == 0 && inGameEnemyArray.size() == 0 && Base.getBaseHealth() > 0) {
+            endNr = 3; // win
+        }
+
+        labelUserAdded = new Text("Score board updated");
+        labelUserAdded.setFill(Color.WHITE);
+        Text endText = new Text();
+        endText.setFill(Color.WHITE);
+        enterUsername = new Text("Enter username: ");
+        enterUsername.setFill(Color.WHITE);
+        Text endTextTitle = new Text();
+        Text endTextScore = new Text("\nYour score: Health: " + Base.getBaseHealth() + ", Money: " + Base.getBaseMoney() + ", on mode: " + Base.getBaseGameMode());
+        endTextScore.setFill(Color.WHITE);
+        endTextTitle.setTextAlignment(TextAlignment.CENTER);
+        endTextTitle.setFill(Color.RED);
+        endTextTitle.setStyle("-fx-font-size: 30px;");
+
+        textField = new TextField("");
+        textField.setMaxWidth(200);
+
+        addUserBox = new HBox(enterUsername, textField, addUserButton);
+        addUserBox.setSpacing(20);
+        addUserBox.setAlignment(Pos.CENTER);
+
+        endGameArea = new VBox(endTextTitle, endText, endTextScore, addUserBox, restartButton, backToMenuButton);
+        if (endNr != 3)
+            endGameArea.getChildren().remove(addUserBox);
+
+        endGameArea.setSpacing(20); // space betweeen V/HBox elements
+        endGameArea.setAlignment(Pos.CENTER);
+        getChildren().remove(mainArea);
+        getChildren().add(endGameArea);
+
+        switch(endNr) {
+            case 1: // no more Base Health
+                endTextTitle.setText("Total elimination");
+                endTextTitle.setFill(Color.RED);
+                endText.setText("Your Base was eradicated and those who still live would prefer dead over this hell."
+                    + "\n"
+                    + "\nEnemys newspaper:"
+                    + "\nMission: \"ethnic cleansing accomplished!\""
+                    + "\n");
+                break;
+            case 2: // no more Base Money
+                endTextTitle.setText("Red guns");
+                endTextTitle.setFill(Color.RED);
+                endText.setText("Oh no, the War Industry prefers money over the flag."
+                    + "\n"
+                    + "\nThe guns got a new Enemy-Red color, as you got out of money."
+                    + "\nThe military corporations have switched the turntables and will now defend anothers freedom..."
+                    + "\n");
+                break;
+            case 3: // no more Enemies
+                endTextTitle.setText("Liberty?");
+                endTextTitle.setFill(Color.GREEN);
+                endText.setText("No more Enemies, no more Reds, just Blue flags everywere, everybody is happy..."
+                    + "\n"
+                    + "\nAs the days passes on, you slowly start to doubt:"
+                    + "\n"
+                    + "\nwho was the Defender and who the Enemy, who was the invador and who the victim,"
+                    + "\nwho is the good and who is the bad one."
+                    + "\n"
+                    + "\nbut \"the winner is always right\", or isn't it..."
+                    + "\n");
+                break;
+          }
+	}
+
+    /** Resetes the game. Stops the timeline, resets the Base data (health and money), clears the arrays containing
+     *  Enemies and Defenders, removes the elements from the gamePane.
+     *
+    **/
+    public void resetGame() {
+        timeline.stop();
+                
+        Base.survivalOrNormalBaseHealt();
+        Base.resetBaseMoney();
+
+        for (int i = 0; i < inGameEnemyArray.size(); i++) {
+            gamePane.getChildren().remove(inGameEnemyArray.get(i).enemyCircle);
+            inGameEnemyArray.get(i).deleteEnemyText();
+        }
+        inGameEnemyArray.clear();
+        removeEveryDefender();
+        defenderArray.clear();
+
+        initialEnemyArray.clear();
+        newEnemyArray(numberOfEnemies);
+        updateTexts();
+        timeline.play();
+    }
+
+    /** 
+     *
+    **/
+    public void pauseGame() {
+        timeline.pause();
+
+        Text pauseText = new Text("Game paused");
+        pauseText.setTextAlignment(TextAlignment.CENTER);
+        pauseText.setFill(Color.WHITE);
+        pauseText.setStyle("-fx-font-size: 30px;");
+
+        pauseGameArea = new VBox(pauseText, continueButton, restartButton, guideButton, backToMenuButton);
+        pauseGameArea.setSpacing(20);
+        pauseGameArea.setAlignment(Pos.CENTER);
+
+        getChildren().remove(mainArea);
+        getChildren().add(pauseGameArea);
+    }
+
+    public void setBestPlayers() {
 		String scoreBoard = Base.readUserScoreBoard();
 		String[] arrayPlayer = scoreBoard.split(System.lineSeparator());
 
@@ -492,7 +563,6 @@ public class App extends VBox {
 				try {
 					throw new ExecptionFileNotFound();
 				} catch (ExecptionFileNotFound e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				return;
@@ -520,7 +590,7 @@ public class App extends VBox {
 		}
 	}
 
-	private Player getBestPlayer(ArrayList<Player> list) {
+	public Player getBestPlayer(ArrayList<Player> list) {
 		Player best = null;
 		if (list.size() == 1)
 			best = list.get(0);
@@ -533,71 +603,14 @@ public class App extends VBox {
 		return best;
 	}
 
-    /** Opens a new Alert Pane with three different textes regarding the input parameter (1, 2, lose and 3 for win) */
-    public void showEndPane(int endNr) {
-
-        labelUserAdded = new Label("Score board updated");
-        labelUserAdded.setTextFill(Color.WHITE);
-        Label endText = new Label();
-        endText.setTextFill(Color.WHITE);
-        enterUsername = new Label("Enter username: ");
-        enterUsername.setTextFill(Color.WHITE);
-        Label endTextTitle = new Label();
-        Label endTextScore = new Label("\nYour score: Health: " + Base.getBaseHealth() + ", Money: " + Base.getBaseMoney() + ", on mode: " + Base.getBaseGameMode());
-        endTextScore.setTextFill(Color.WHITE);
-        endTextTitle.setAlignment(Pos.CENTER);
-        endTextTitle.setTextFill(Color.RED);
-        endTextTitle.setStyle("-fx-font-size: 30px;");
-
-        textField.setMaxWidth(200);
-
-        addUserBox = new HBox(enterUsername, textField, addUserButton);
-        addUserBox.setSpacing(20);
-        addUserBox.setAlignment(Pos.CENTER);
-
-        endGameArea = new VBox(endTextTitle, endText, endTextScore, addUserBox, restartButton, backToMenuButton);
-        if (endNr != 3)
-            endGameArea.getChildren().remove(addUserBox);
-
-        endGameArea.setSpacing(20); // space betweeen V/HBox elements
-        endGameArea.setAlignment(Pos.CENTER);
-        getChildren().remove(mainArea);
-        getChildren().add(endGameArea);
-
-        switch(endNr) {
-            case 1: // no more Base Health
-                endTextTitle.setText("Total elimination");
-                endTextTitle.setTextFill(Color.RED);
-                endText.setText("Your Base was eradicated and those who still live would prefer dead over this hell."
-                    + "\n"
-                    + "\nEnemys newspaper:"
-                    + "\nMission: \"ethnic cleansing accomplished!\""
-                    + "\n");
-                break;
-            case 2: // no more Base Money
-                endTextTitle.setText("Red guns");
-                endTextTitle.setTextFill(Color.RED);
-                endText.setText("Oh no, the War Industry prefers money over the flag."
-                    + "\n"
-                    + "\nThe guns got a new Red paint, as you got out of money."
-                    + "\nThe military corporations have switched the turntables and will now defend anothers freedom..."
-                    + "\n");
-                break;
-            case 3: // no more Enemies
-                endTextTitle.setText("Liberty?");
-                endTextTitle.setTextFill(Color.GREEN);
-                endText.setText("No more Enemies, no more Reds, just Blue flags everywere, everybody is happy..."
-                    + "\n"
-                    + "\nAs the days passes on, you slowly start to doubt:"
-                    + "\n"
-                    + "\nwho was the Defender and who the Enemy, who was the invador and who the victim,"
-                    + "\nwho is the good and who is the bad one."
-                    + "\n"
-                    + "\nbut \"the winner is always right\", or isn't it..."
-                    + "\n");
-                break;
-          }
-	}
+    /** Updates the Texts (the text Health, Money, the game description and the health of every Enemy) */
+    private void updateTexts() {
+        labelBaseHealth.setText("Health: " + Base.getBaseHealth());
+        labelBaseMoney.setText("$ " + Base.getBaseMoney());
+        for (int i = 0; i < inGameEnemyArray.size(); i++) {
+            inGameEnemyArray.get(i).getEnemyHealthText().setText("" + inGameEnemyArray.get(i).getEnemyHealth());
+        }
+    }
 
     /** Adds to the current Score Board text (.txt) file the current content and the new User with the Userdata */
     private void addUsertoScoreBoard() {
@@ -609,38 +622,5 @@ public class App extends VBox {
         } catch (IOException e2) {
             e2.printStackTrace();
         }
-    }
-
-    /** 
-     *
-    **/
-    private void pauseGame() {
-        Label pauseText = new Label("Game paused");
-        pauseText.setAlignment(Pos.CENTER);
-        pauseText.setTextFill(Color.WHITE);
-        pauseText.setStyle("-fx-font-size: 30px;");
-
-        // endGameArea.setBackground(value);
-
-        pauseGameArea = new VBox(pauseText, continueButton, restartButton, guideButton, backToMenuButton);
-        pauseGameArea.setSpacing(20);
-        pauseGameArea.setAlignment(Pos.CENTER);
-
-        getChildren().remove(mainArea);
-        getChildren().add(pauseGameArea);
-    }
-
-    /** Updates the Labels (the text Health, Money, the game description and the health of every Enemy) */
-    private void updateLabels() {
-        labelBaseHealth.setText("Health: " + Base.getBaseHealth());
-        labelBaseMoney.setText("$ " + Base.getBaseMoney());
-        for (int i = 0; i < inGameEnemyArray.size(); i++) {
-            inGameEnemyArray.get(i).getEnemyHealthLabel().setText("" + inGameEnemyArray.get(i).getEnemyHealth());
-        }
-    }
-    
-    private int randomEnemyRank() {
-        Random randy = new Random();
-        return randy.nextInt(3)+1;
     }
 }

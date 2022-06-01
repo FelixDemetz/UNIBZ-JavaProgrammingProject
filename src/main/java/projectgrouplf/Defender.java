@@ -9,8 +9,8 @@ public class Defender {
     public Rectangle defenderRectangle;
     public Circle defenderAttackCircle;
     private Coordinate defenderCoordinate;
-    private double circleRadius;
-    private int defenderDamage;
+    private double circleRadius = 0;
+    private int defenderDamage = 0;
 
     public Defender(Coordinate defenderCoordinate, int defenderRank) {
         this.defenderCoordinate = defenderCoordinate;
