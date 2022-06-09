@@ -30,6 +30,13 @@ public class Street {
 
     /** Adds the streets in this method to the array */
     private void addStreetsToArray() {
+        newStreet1();
+        newStreet2();
+        newStreet3();
+        newStreet4();
+    }
+
+    private void newStreet1() {
         // first street
         Coordinate d1 = new Coordinate(App.startingCord.getCoordinateX(), App.startingCord.getCoordinateY(), 0);
         Coordinate d2 = new Coordinate(App.startingCord.getCoordinateX() +200, App.startingCord.getCoordinateY() );
@@ -46,7 +53,9 @@ public class Street {
         Coordinate d9 = new Coordinate(App.startingCord.getCoordinateX() +400, App.startingCord.getCoordinateY(), 0);
         Coordinate d10 = new Coordinate(App.startingCord.getCoordinateX() +800, App.startingCord.getCoordinateY() );
         streetArray.add(new Street(d1, d2, d3, d4, d5, d6, d7, d8, d9, d10));
+    }
 
+    private void newStreet2() {
         // second street
         Coordinate b1 = new Coordinate(App.startingCord.getCoordinateX(), App.startingCord.getCoordinateY(), 0);
         Coordinate b2 = new Coordinate(App.startingCord.getCoordinateX() +50, App.startingCord.getCoordinateY() );
@@ -75,7 +84,9 @@ public class Street {
         Coordinate b17 = new Coordinate(App.startingCord.getCoordinateX() +700, App.startingCord.getCoordinateY() +125, 0);
         Coordinate b18 = new Coordinate(App.startingCord.getCoordinateX() +800, App.startingCord.getCoordinateY() +125 );
         streetArray.add(new Street(b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16, b17, b18));
+    }
 
+    private void newStreet3() {
         // third street
         Coordinate c1 = new Coordinate(App.startingCord.getCoordinateX(), App.startingCord.getCoordinateY(), 0);
         Coordinate c2 = new Coordinate(App.startingCord.getCoordinateX() +50, App.startingCord.getCoordinateY() );
@@ -104,7 +115,9 @@ public class Street {
         Coordinate c17 = new Coordinate(App.startingCord.getCoordinateX() +400, App.startingCord.getCoordinateY() -25, 0);
         Coordinate c18 = new Coordinate(App.startingCord.getCoordinateX() +800, App.startingCord.getCoordinateY() -25 );
         streetArray.add(new Street(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18));
-    
+    }
+
+    private void newStreet4() {
         // fourth street
         Coordinate a1 = new Coordinate(App.startingCord.getCoordinateX(), App.startingCord.getCoordinateY(), 0);
         Coordinate a2 = new Coordinate(App.startingCord.getCoordinateX() +50, App.startingCord.getCoordinateY() );

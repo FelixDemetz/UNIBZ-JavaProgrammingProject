@@ -22,7 +22,7 @@ class EnemyTest {
     }
 
 
-    /** The next test mets test if the enemyMovesForward() met works correctly with different coordinates and Enemy rank types 
+    /** The next test mets tests if the enemyMovesForward() met works correctly with different coordinates and Enemy rank types 
      *  Testet the Enemy coordinate, the Enemy circle and the Enemy text.
     */
 

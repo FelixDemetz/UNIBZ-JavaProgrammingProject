@@ -2,9 +2,9 @@
 
 ## 1. About
 
-Tower Defence game by Felix Demetz and Lucas Glück.
+Tower Defense game by Felix Demetz and Lucas Glück.
 
-The project consists in creating an "tower defence" videogame. The goal is to have a gaming experience in which, the user through a propper GUI, must defend a certain road (= a direction in which an element moves) by the enemy (= an element that decrements a score, if reached certain coordinates). The game ends if there is no more enemy, (means that the Base survived), if the Bases health is 0 or less, or if the Money is less then 0. Once the game is finished, the player can register with a username the score in the local scoreboard (= a txt file). We use the "JavaFX" library to emulate and display the game. The user can interact with the mouse on 2D elements displayed on the screen. 
+The project consists in creating a "tower defense" videogame. The goal is to have a gaming experience in which, the user through a proper GUI, must defend a certain road (= a direction in which an element moves) by the enemy (= an element that decrements a score, if reached certain coordinates). The game ends if there is no more enemy, (means that the Base survived), if the Bases health is 0 or less, or if the Money is less then 0. Once the game is finished, the player can register with a username the score in the local scoreboard (= a txt file). We use the "JavaFX" library to emulate and display the game. The user can interact with the mouse on 2D elements displayed on the screen. 
 
 ### 1.1. Demo
 
@@ -19,7 +19,7 @@ Lucas Glück Stundet ID: 19084
 
 ## 3. Usage
 
-How to compile, packege and run the project.
+How to compile, package and run the project.
 
 1. Compile via Maven:
    ```bash
@@ -53,7 +53,7 @@ None
 
 List and explain how you used the 10 programming techniques required for this project.
 
-- **Technique 1**: We used Collections (ArrayList, arrays) to gather together many elements of the same type
+- **Technique 1**: We used Collections (ArrayList, arrays) to gather many elements of the same type
 - **Technique 2**: We used Custom exceptions to get informed when a file (the scoreboard.txt file) is not present or corrupt.
 - **Technique 3**: We use Try-Catch blocks to read and write on a file and to throw exceptions
 - **Technique 4**: We used met overriding in the Launcher.java start() met and in our custom exception class.
@@ -62,19 +62,19 @@ List and explain how you used the 10 programming techniques required for this pr
 - **Technique 7**: We used Optionals in every Alert dialog pane, to use ButtonTypes.
 - **Technique 8**: We used I/O when reading or writing on our Scoreboard.txt.
 - **Technique 9**: We used regular expressions to filter certain parts of the scoreboard and then set up the best player.
-- **Technique 10**: We used the graphical interface JavaFX so that the user can more easely interact with the game.
-<!-- - **Technique 11**: We used test hooks in testing. -->
+- **Technique 10**: We used the graphical interface JavaFX so that the user can more easily interact with the game.
+- **Technique 11** We used varargs to add a different number of elements (Coordinates) in to an Constructor.
 
 ### 4.4. TODO Tests
 
-Briefly describe and motivate your test suite.
+We often tried to test the game just by running it, but in some cases the the test classes helped us: to write cleaner code, find bugs and and remove unnecessary data.
 
 ## 5. Experience
 
 ### 5.1. Overall Experience
 
-The implementation of a tiny story in the game, made the hours of "googleing" and the problems with JavaFX easier to handle. We noticed that sometimes one member spend hours on the implementation of a new method and just did minor progesses, and then out of nowhere the other member figured it out in some minutes. We underestimated the time needed to research and to find the right classes and techniques to implement certain behaviours.
-To know that we only used the knowledge that we gained during lectures, the internet and our motivation to start form an idea in our head and than see the game working as we sketched it, fills us with joy.
+The implementation of a tiny story in the game, made the hours of "googleing" and the problems with JavaFX easier to handle. We noticed that sometimes one member spend hours on the implementation of a new method and just did minor progesses, and then out of nowhere the other member figured it out in some minutes. We underestimated the time needed to research and to find the right classes and techniques to implement certain behaviors.
+To know that we only used the knowledge that we gained during lectures, the internet, and our motivation to start form an idea in our head and than see the game working as we sketched it, fills us with joy.
 
 ### 5.2. Division of Responsibilities
 
