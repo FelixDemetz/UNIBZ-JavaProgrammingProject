@@ -17,15 +17,12 @@ public class Enemy {
     private int enemyHealth = 0;
     private int enemyMoney = 0;
 
-    /** enemyRank is 1, 2 or 3, the site, health, money and damage increases */
+    /** enemyRank is 1, 2 or 3, the size, health, money and damage increases */
     public Enemy(Coordinate enemyCoordinate, int enemyRank) {
         this.enemyCoordinate = enemyCoordinate;
         this.enemyCircle = new Circle(enemyCoordinate.getCoordinateX(), enemyCoordinate.getCoordinateY(), 25);
         this.enemyCircle.setFill(Color.RED); // should allways be a commie :)
         this.enemyHealthText.setFill(Color.YELLOW);
-        // this.enemyHealthText.setLayoutX(enemyCoordinate.getCoordinateX() - this.enemyHealthText.getX());
-        // this.enemyHealthText.setLayoutY(enemyCoordinate.getCoordinateY() - this.enemyHealthText.getY());
-
         setEnemyRank(enemyRank);
     }
     
@@ -123,10 +120,6 @@ public class Enemy {
         }
     }
 
-    public void setEnemyDirection(double enemyDirection) {
-        this.enemyDirection = enemyDirection;
-    }
-
     /** Checks if Enemy has reached endingPoint, (cordX of Enemy is bigger than cordX of endingPoint). If true damages Base */
     public boolean checkIfEnemyReachedBase(Coordinate endingPoint) {
         boolean b = false;
@@ -151,6 +144,9 @@ public class Enemy {
     }
     public void deleteEnemyText() {
         this.enemyHealthText.setText("");
+    }
+    public void setEnemyDirection(double enemyDirection) {
+        this.enemyDirection = enemyDirection;
     }
     
 }

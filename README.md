@@ -69,6 +69,18 @@ List and explain how you used the 10 programming techniques required for this pr
 
 We often tried to test the game just by running it, but in some cases the the test classes helped us: to write cleaner code, find bugs and and remove unnecessary data.
 
+Test Classes:
+
+- BaseTest: tests the mode (Survival or Normal) and that the case that it could not read the file.
+
+- EnemyTest: tests, the instantiation of Enemies, if the Enemie has passed the EndingPoint and the Coordinates.
+
+- DefenderTest: tests the coordinates and the damage of the Defender.
+
+- PlayerTest: tests the best Player out of a Array of them.
+
+- CoordinateTest: testet Setters, Getters and the String met.
+
 ## 5. Experience
 
 ### 5.1. Overall Experience
