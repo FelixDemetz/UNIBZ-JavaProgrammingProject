@@ -1,8 +1,10 @@
 package projectgrouplf;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 public class Enemy {
@@ -10,6 +12,7 @@ public class Enemy {
     public Circle enemyCircle;
     public Text enemyHealthText = new Text("");
     public Coordinate enemyCoordinate;
+    private double enemyDirection = 0;
     private int enemyDamage = 0;
     private int enemyHealth = 0;
     private int enemyMoney = 0;
@@ -66,7 +69,23 @@ public class Enemy {
     public Text getEnemyHealthText() {
         return enemyHealthText;
     }
+
+    public double getEnemyDirection() {
+        return enemyDirection;
+    }
+    
     // Setters
+
+    /** Static met adds to an array the number of enemies. Paramters: the first is for the number of Enemies in the array, the 2. is for the Coordinate of every Enemy in the array and 3. is the number of possible enemy Ranks*/
+    public static ArrayList<Enemy> setNewEnemyArray(int numberOfEnemiesInArray, Coordinate startingPoint, int numberOfEnemyRanks) {
+        ArrayList<Enemy> initialEnemyArray = new ArrayList<Enemy>();
+        for (int i = 0; i < numberOfEnemiesInArray; i++) {
+            int enemyRank = new Random().nextInt(numberOfEnemyRanks)+1;
+            initialEnemyArray.add(new Enemy(startingPoint, enemyRank));
+        } 
+        return initialEnemyArray;
+    }
+    
     /** Sets the coordinates for every Enemy element: new Coordinate, Circle, HealthText, this met is needed in enemyMovesForward met */
     private void setEnemyCoordinate(Coordinate enemyCoordinate) {
         this.enemyCoordinate =  enemyCoordinate;
@@ -76,18 +95,42 @@ public class Enemy {
         this.enemyHealthText.setY(enemyCoordinate.getCoordinateY() + 5);
     }
 
-    /** Sets the coordinates for met setEnemyCoordinates met */
-    public void enemyMovesForward(Coordinate newCord, Rectangle endingPoint) {
-        boolean enemyNotReachedEnd = this.getEnemyCoordinate().getCoordinateX() < endingPoint.getX()+this.enemyCircle.getRadius();
+    /** Sets the coordinates for met setEnemyCoordinates met, the direction should be up, down, left or right */
+    public void enemyMovesForward(double movementInPixel, Coordinate endingPoint) {
+        boolean enemyNotReachedEnd = this.getEnemyCoordinate().getCoordinateX() < endingPoint.getCoordinateX()+this.enemyCircle.getRadius();
+        double direction = getEnemyDirection();
         if (enemyNotReachedEnd) {
-            this.setEnemyCoordinate(new Coordinate(this.enemyCoordinate.getCoordinateX() + newCord.getCoordinateX(), this.enemyCoordinate.getCoordinateY() + newCord.getCoordinateY()));
+            double movementX = 0;
+            double movementY = 0;
+            if (direction == -1) {
+                movementX = 0;
+                movementY = movementInPixel;
+            }
+            if (direction == 1) {
+                movementX = 0;
+                movementY = - movementInPixel; // minus
+            }
+            if (direction == 0) {
+                movementX = movementInPixel;
+                movementY = 0;
+            }
+            if (direction == 2) {
+                movementX = - movementInPixel; // minus
+                movementY = 0;
+            }
+            Coordinate c = new Coordinate(this.enemyCoordinate.getCoordinateX() + movementX, this.enemyCoordinate.getCoordinateY() + movementY);
+            this.setEnemyCoordinate(c);
         }
     }
 
+    public void setEnemyDirection(double enemyDirection) {
+        this.enemyDirection = enemyDirection;
+    }
+
     /** Checks if Enemy has reached endingPoint, (cordX of Enemy is bigger than cordX of endingPoint). If true damages Base */
-    public boolean checkIfEnemyReachedBase(Rectangle endingPoint) {
+    public boolean checkIfEnemyReachedBase(Coordinate endingPoint) {
         boolean b = false;
-        if (this.getEnemyCoordinate().getCoordinateX() > endingPoint.getX()) { // for every Enemy that is after the finish get damage, remove
+        if (this.getEnemyCoordinate().getCoordinateX() > endingPoint.getCoordinateX()) { // for every Enemy that is after the finish get damage, remove
             Base.setBaseHealth(Base.getBaseHealth() -this.getEnemyDamage());
             b = true;
         }

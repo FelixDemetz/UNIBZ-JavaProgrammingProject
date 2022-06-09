@@ -1,0 +1,4 @@
+Player: testPlayer, Health: 6, Money: 170, Game mode: Normal, Date: 04-06-2022.
+Player: bestUser, Health: 10, Money: 280, Game mode: Normal, Date: 04-06-2022.
+Player: testSurival, Health: 1, Money: 255, Game mode: Survival, Date: 04-06-2022.
+Player: tester123, Health: 6, Money: 290, Game mode: Normal, Date: 04-06-2022.
