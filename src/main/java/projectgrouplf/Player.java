@@ -20,12 +20,14 @@ public class Player {
      *  if the array has only one element it returns this, else it compares beginning with the first element every Plaer's Health in the array */
     public static Player getBestHealthPlayer(ArrayList<Player> array, boolean normalGameMode) {
         ArrayList<Player> list = new ArrayList<>();
+        Player best = null;
+        if (array == null)
+            return best;
         for (int i = 0; i < array.size(); i++) { // creating a new array with
             if (normalGameMode == playerIsNormal(array.get(i))) {
                 list.add(array.get(i));
             }
         }
-        Player best = null;
 		if (list.size() == 1)
             best = list.get(0);
 		for (int i = 0; i < list.size(); i++) {
