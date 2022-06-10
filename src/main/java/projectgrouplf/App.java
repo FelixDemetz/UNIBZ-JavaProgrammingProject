@@ -387,21 +387,23 @@ public class App extends VBox {
     /**  */
     private void showStartPane() {
         Text title = new Text("Blood for Freedom");
-        Text textMadaByUs = new Text("              Tower Defense game by Felix Demetz und Lucas Glück v1.3");
         title.setTextAlignment(TextAlignment.CENTER);
         title.setFill(Color.rgb(255, 30, 70));
         title.setStyle("-fx-font-size: 30px;");
+        Text textMadaByUs = new Text("              Tower Defense game by Felix Demetz und Lucas Glück v1.3");
         textMadaByUs.setTextAlignment(TextAlignment.LEFT);
         textMadaByUs.setFill(Color.WHITE);
+        Text text = new Text();
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setFill(Color.WHITE);
+        Text hintText = new Text("Hint: for first time players pls click on \"Guide\".");
+        hintText.setTextAlignment(TextAlignment.CENTER);
+        hintText.setFill(Color.YELLOW);
 
         String bestPlayerString = "* No Player *";
 		String bestSurvivalPlayerString = "* No Player *";
 
-        Text text = new Text();
-        text.setTextAlignment(TextAlignment.CENTER);
-        text.setFill(Color.WHITE);
-
-        VBox mainBox = new VBox(title, text, playNormalButton, playSurvivalButton, guideButton, scoreBoardButton, quitButton);
+        VBox mainBox = new VBox(title, text, hintText, playNormalButton, playSurvivalButton, guideButton, scoreBoardButton, quitButton);
         mainBox.setAlignment(Pos.CENTER);
         mainBox.setSpacing(20);
 
@@ -416,10 +418,7 @@ public class App extends VBox {
 		if (bestSurvival != null) // if there was at least one
 			bestSurvivalPlayerString = bestSurvival.playerName;
 
-        text.setText("High Score:\n\nNormal Mode: " + bestPlayerString + "         Survival Mode: " + bestSurvivalPlayerString
-		+ "\n"
-		+ "\n"
-		+ "\nHint: for first time players pls click on \"Guide\".");
+        text.setText("High Score:\n\nNormal Mode: " + bestPlayerString + "         Survival Mode: " + bestSurvivalPlayerString);
 
         getChildren().add(startGameArea);
     }
