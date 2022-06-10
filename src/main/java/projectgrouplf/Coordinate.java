@@ -3,7 +3,7 @@ package projectgrouplf;
 public class Coordinate {
 
 	private double coordinateX, coordinateY; // we should not access this data directly only through mets
-	/** -1 for down 1 for up 0 for straight */
+	/** -1 for down 1 for up 0 for right and 2 for left */
 	public double enemyDirection;
 
 	public Coordinate(double coordinateX, double coordinateY) {
@@ -33,7 +33,7 @@ public class Coordinate {
 		this.coordinateY = coordinateY; 
 	}
 	public String toString() {
-		return new String("CordX: " + this.coordinateX + " , cordY: " + this.coordinateY);
+		return new String("CordX: " + this.coordinateX + " , CordY: " + this.coordinateY);
 	}
 
 }

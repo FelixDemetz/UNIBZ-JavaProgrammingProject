@@ -74,11 +74,11 @@ public class Enemy {
     // Setters
 
     /** Static met adds to an array the number of enemies. Paramters: the first is for the number of Enemies in the array, the 2. is for the Coordinate of every Enemy in the array and 3. is the number of possible enemy Ranks*/
-    public static ArrayList<Enemy> setNewEnemyArray(int numberOfEnemiesInArray, Coordinate startingPoint, int numberOfEnemyRanks) {
+    public static ArrayList<Enemy> setNewEnemyArray(int numberOfEnemiesInArray, int numberOfEnemyRanks) {
         ArrayList<Enemy> initialEnemyArray = new ArrayList<Enemy>();
         for (int i = 0; i < numberOfEnemiesInArray; i++) {
             int enemyRank = new Random().nextInt(numberOfEnemyRanks)+1;
-            initialEnemyArray.add(new Enemy(startingPoint, enemyRank));
+            initialEnemyArray.add(new Enemy(App.startingCord, enemyRank));
         } 
         return initialEnemyArray;
     }

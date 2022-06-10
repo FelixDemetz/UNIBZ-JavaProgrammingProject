@@ -107,5 +107,16 @@ A big challenge (for both of us) was to design the entire project, where to put 
 
 Describe what you learned with this project.
 
-- **Student Felix Demetz** I learned a new library called `xyz`!
+- **Student Felix Demetz** learned about:
+   I/O library, how to read and write from files.
+   Shape library, how to manage Rectangles, Circles and Lines.
+   Animation library, to time the main game loop with an timeline.
+   Control.Alert library, how to work wiht alert Panes.
+   The ButtonType type for alert panes.
+   To use Regex to split up text parts.
+   To change "window / pane" when the app pauses, finishes or ends game.
+   To use Maven on a project.
+   To create test classes for our project.
+   To create a GUI using JavaFX.
+
 - **Student Lucas Glück** I learned how to implement the design pattern `abc`

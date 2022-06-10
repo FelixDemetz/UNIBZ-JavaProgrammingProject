@@ -18,7 +18,7 @@ class EnemyTest {
     @Test
     @DisplayName("Testing if the setNewEnemyArray() creates 100 Enemies")
     void setNewEnemyArrayHasCertainSize() {
-        ArrayList<Enemy> array= Enemy.setNewEnemyArray(100, startingPoint, totalEnemyRanks);
+        ArrayList<Enemy> array= Enemy.setNewEnemyArray(100, totalEnemyRanks);
         assertEquals(100, array.size());
     }
 

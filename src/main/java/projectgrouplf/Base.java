@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class Base { // should it be static?
+public class Base {
 
     public static boolean survival = false;
     private static int baseHealth;
