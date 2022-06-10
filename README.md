@@ -65,7 +65,7 @@ List and explain how you used the 10 programming techniques required for this pr
 - **Technique 10**: We used the graphical interface JavaFX so that the user can more easily interact with the game.
 - **Technique 11** We used varargs to add a different number of elements (Coordinates) in to an Constructor.
 
-### 4.4. TODO Tests
+### 4.4. Tests
 
 We often tried to test the game just by running it, but in some cases the the test classes helped us: to write cleaner code, find bugs and and remove unnecessary data.
 
@@ -103,20 +103,22 @@ We never clearely divided responsabilities, we developed the game together, writ
 
 A big challenge (for both of us) was to design the entire project, where to put a method, which classes we need, ecc. At the end we decided to have an App class (most important one) and a Base class that saves Health, Money, GameMode and so on.
 
-### TODO 5.4. Learning Outcomes
+### 5.4. Learning Outcomes
 
 Describe what you learned with this project.
 
 - **Student Felix Demetz** learned about:
-   I/O library, how to read and write from files.
-   Shape library, how to manage Rectangles, Circles and Lines.
-   Animation library, to time the main game loop with an timeline.
-   Control.Alert library, how to work wiht alert Panes.
-   The ButtonType type for alert panes.
-   To use Regex to split up text parts.
-   To change "window / pane" when the app pauses, finishes or ends game.
-   To use Maven on a project.
-   To create test classes for our project.
-   To create a GUI using JavaFX.
+   - I/O library, how to read and write from files.
+   - Shape library, how to manage Rectangles, Circles and Lines.
+   - Animation library, to time the main game loop with an timeline.
+   - Control.Alert library, how to work wiht alert Panes.
+   - The ButtonType type for alert panes.
+   - To use Regex to split up text parts.
+   - To change "window / pane" when the app pauses, finishes or ends game.
+   - To use Maven on a project.
+   - To create test classes for our project.
+   - To create a GUI using JavaFX.
 
-- **Student Lucas Glück** I learned how to implement the design pattern `abc`
+- **Student Lucas Glück** learned about:
+   - ... .
+   - ... .
