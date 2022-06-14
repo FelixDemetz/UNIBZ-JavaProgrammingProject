@@ -5,13 +5,20 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 
+=======
+>>>>>>> 507d86b2047b10cd805bdad2f1889861c8fd78de
 public class CoordinateTest { 
 
     @Test
     @DisplayName("Testing if returned value of the CoordinateX is the right one")
+<<<<<<< HEAD
     void getCoordinateX() {
+=======
+    void getCoordinateXTest() {
+>>>>>>> 507d86b2047b10cd805bdad2f1889861c8fd78de
         Coordinate c1 = new Coordinate(10, 30);
         double coordinateX;
 
@@ -21,7 +28,11 @@ public class CoordinateTest {
 
     @Test
     @DisplayName("Testing if returned value of the CoordinateY is the right one")
+<<<<<<< HEAD
     void getCoordinateY() {
+=======
+    void getCoordinateYTest() {
+>>>>>>> 507d86b2047b10cd805bdad2f1889861c8fd78de
         Coordinate c1 = new Coordinate(10, 30);
         double coordinateY;
 
@@ -31,7 +42,11 @@ public class CoordinateTest {
 
     @Test
     @DisplayName("Testing if you can set the CoordinateX of a Coordinate and it returns the right one.")
+<<<<<<< HEAD
     void setCoordinateX() {
+=======
+    void setCoordinateXTest() {
+>>>>>>> 507d86b2047b10cd805bdad2f1889861c8fd78de
         Coordinate c1 = new Coordinate(10, 30);
         double coordinateX1= 99, coordinateX2;
 
@@ -42,7 +57,11 @@ public class CoordinateTest {
 
     @Test
     @DisplayName("Testing if you can set the CoordinateY of a Coordinate and it returns the right one.")
+<<<<<<< HEAD
     void setCoordinateY() {
+=======
+    void setCoordinateYTest() {
+>>>>>>> 507d86b2047b10cd805bdad2f1889861c8fd78de
         Coordinate c1 = new Coordinate(10, 30);
         double coordinateY1= 99, coordinateY2;
 

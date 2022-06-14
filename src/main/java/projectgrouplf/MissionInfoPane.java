@@ -18,7 +18,7 @@ public class MissionInfoPane {
 
 		if (Base.survival) { // this is the dialog that is on the Pane after the start it depends if you choose Normal or Surival
 			dialog.setHeaderText("Doomsday");
-			dialog.setContentText("You are the last man standing, the rest surrendered"
+			dialog.setContentText("You are the last man standing, the rest surrendered."
 				+ "\n"
 				+ "\nUse your wisdom to place defense units on the battlefield."
 				+ "\nWith the gun lobby at your side, defend your Bases health at all cost."
