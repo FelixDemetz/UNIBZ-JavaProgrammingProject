@@ -8,7 +8,9 @@ The project consists in creating a "tower defense" videogame. The goal is to hav
 
 ### 1.1. Demo
 
-Add a link to a demo of your project.
+Link to the video presentation of our Tower Defence game on Youtube!
+
+https://youtu.be/7nJTTs7Ycr8
 
 ## 2. Authors
 
@@ -33,10 +35,6 @@ How to compile, package and run the project.
    ```bash
    mvn javafx:run
    ```
-<!-- 4. Run your application via the jar you generate:
-   ```bash
-   java -jar target/ProjectLF-1.0-SNAPSHOT.jar
-   ``` -->
 
 ## 4. Implementation
 
