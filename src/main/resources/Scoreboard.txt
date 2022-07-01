@@ -1,2 +1,0 @@
-Player: lucas, Health: 4, Money: 215, Game mode: Normal, Date: 21-06-2022.
-Player: liuk, Health: 8, Money: 270, Game mode: Normal, Date: 01-07-2022.
