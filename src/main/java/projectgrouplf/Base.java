@@ -4,14 +4,14 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class Base { // should it be static?
+public class Base {
 
     public static boolean survival = false;
     private static int baseHealth;
     private static int baseMoney = 100; // should be 100
     private static int initialBaseMoney = baseMoney;
     /** it is written in the Base class so that every other class can use the variable it easely */
-    public static String scoreBoardRelativePath = "src/main/resources/Score Board.txt";
+    public static String scoreBoardRelativePath = "src/main/resources/Scoreboard.txt";
 
     public Base() {
     }
@@ -50,7 +50,7 @@ public class Base { // should it be static?
 
     /** Scanns the file containing the current Score Board (it is written in the Base class so that every other class can use the met it easely) */
     public static String readUserScoreBoard() {
-        String s = "error";
+        String s = "readUserScoreBoardFailed";
         try (BufferedReader br = new BufferedReader(new FileReader(scoreBoardRelativePath))) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();

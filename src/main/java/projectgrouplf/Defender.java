@@ -9,8 +9,8 @@ public class Defender {
     public Rectangle defenderRectangle;
     public Circle defenderAttackCircle;
     private Coordinate defenderCoordinate;
-    private double circleRadius = 50;
-    private int defenderDamage = 10;
+    private double circleRadius = 0;
+    private int defenderDamage = 0;
 
     public Defender(Coordinate defenderCoordinate, int defenderRank) {
         this.defenderCoordinate = defenderCoordinate;
@@ -21,7 +21,7 @@ public class Defender {
         setDefenderRank(defenderRank);
     }
 
-    /** This is the most important met for the enemy it defines the rank (damage, health, money and size) **/
+    /** This is the most important met for the Defender it defines the rank (damage, health and size) */
     private Defender setDefenderRank(int defenderRank) {
         if (defenderRank == 1) {
             this.setDefenderDamage(1);
